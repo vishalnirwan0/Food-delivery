@@ -85,7 +85,8 @@ export default class EditItems extends Component{
                       size={10}
                   />
                   <TextInput 
-                      value={localStorage.getItem("merchantEditItemdesc")}
+                    placeholder={localStorage.getItem("merchantEditItemdesc")}
+                     // value={localStorage.getItem("merchantEditItemdesc")}
                       style={styles.textInput}
                       autoCapitalize="none"
                       onChangeText={(val) => this.itemDescriptionInputChange(val)}
@@ -103,8 +104,8 @@ export default class EditItems extends Component{
                       size={10}
                   />
                   <TextInput 
-                     // placeholder="Food Price" // merchantEditItemPrice
-                      value={localStorage.getItem("merchantEditItemPrice")}
+                      placeholder={localStorage.getItem("merchantEditItemPrice")} // merchantEditItemPrice
+                      //value={localStorage.getItem("merchantEditItemPrice")}
                       style={styles.textInput}
                       autoCapitalize="none"
                       onChangeText={(val) => this.itempriceInputChange(val)}
