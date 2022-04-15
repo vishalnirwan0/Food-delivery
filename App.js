@@ -1,15 +1,9 @@
-import { View, Text } from "react-native";
+// import { View, Text } from "react-native";
+import RootNavigation from "./navigation";
+// import Home from "./screens/Home";
+// import RestaurantDetail from "./screens/RestaurantDetail";
 
 export default function App() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Universal React with Expo</Text>
-    </View>
-  );
+  // return <Home/>
+  return <RootNavigation />
 }
