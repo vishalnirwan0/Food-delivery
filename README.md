@@ -1,2 +1,2 @@
-# Food-devlivery
+# Food-delivery
 MSc Web-App Project
