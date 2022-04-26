@@ -24,6 +24,8 @@ export default function MenuItems({
   hideCheckbox,
   marginLeft,
 }) {
+
+  console.log(">>>>>. foods", foods)
   const dispatch = useDispatch();
 
   const selectItem = (item, checkboxValue) =>
@@ -45,7 +47,7 @@ export default function MenuItems({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {foods.map((food, index) => (
+      {foods && foods.map((food, index) => (
         <View key={index}>
           <View style={styles.menuItemStyle}>
             {hideCheckbox ? (

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import OrderItem from "./OrderItem";
-// import firebase from "../../firebase";
-import LottieView from "lottie-react-native";
+import db from "../../firebase";
+// import LottieView from "lottie-react-native";
 
 export default function ViewCart({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,22 +23,24 @@ export default function ViewCart({ navigation }) {
     currency: "USD",
   });
 
-//   const addOrderToFireBase = () => {
-//     setLoading(true);
-//     const db = firebase.firestore();
-//     db.collection("orders")
-//       .add({
-//         items: items,
-//         restaurantName: restaurantName,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-//       })
-//       .then(() => {
-//         setTimeout(() => {
-//           setLoading(false);
-//           navigation.navigate("OrderCompleted");
-//         }, 2500);
-//       });
-//   };
+  const addOrderToFireBase = () => {
+    setLoading(true);
+    // const db = getFirestore(firebase);
+    const collectionRef = collection(db, "orders");
+      addDoc(collectionRef, {
+        items: items,
+        restaurantName: restaurantName,
+        createdAt: serverTimestamp(),
+      });
+      navigation.navigate("OrderCompleted");
+
+    //   .then(() => {
+    //     setTimeout(() => {
+    //       setLoading(false);
+    //       navigation.navigate("OrderCompleted");
+    //     }, 2500);
+    //   });
+  };
 
   const styles = StyleSheet.create({
     modalContainer: {
@@ -99,7 +102,7 @@ export default function ViewCart({ navigation }) {
                   position: "relative",
                 }}
                 onPress={() => {
-                //   addOrderToFireBase();
+                  addOrderToFireBase();
                   setModalVisible(false);
                 }}
               >
@@ -140,8 +143,9 @@ export default function ViewCart({ navigation }) {
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
-            position: "absolute",
-            bottom: 130,
+            position: "fixed",
+            bottom: 50,
+            left: 500,
             zIndex: 999,
           }}
         >
@@ -157,7 +161,7 @@ export default function ViewCart({ navigation }) {
                 marginTop: 20,
                 backgroundColor: "black",
                 flexDirection: "row",
-                justifyContent: "flex-end",
+                justifyContent: "center",
                 padding: 15,
                 borderRadius: 30,
                 width: 300,
@@ -175,7 +179,7 @@ export default function ViewCart({ navigation }) {
       ) : (
         <></>
       )}
-      {loading ? (
+      {/* {loading ? (
         <View
           style={{
             backgroundColor: "black",
@@ -196,7 +200,7 @@ export default function ViewCart({ navigation }) {
         </View>
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 }

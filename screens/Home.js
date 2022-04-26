@@ -45,7 +45,7 @@ export default function Home({ navigation }) {
         <View style={{ backgroundColor: 'white', padding: 15 }} >
         <BottomTabs />
         <Divider width={1} />
-            <HeaderTabs />
+            <HeaderTabs navigation={navigation}/>
             <SearchBar cityHandler={setCity} />
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
