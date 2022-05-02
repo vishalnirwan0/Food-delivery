@@ -9,6 +9,7 @@ import RestaurantDetail from "./screens/RestaurantDetail";
 import OrderCompleted from "./screens/OrderCompleted";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import AddMenu from "./ExtraComponent/AddMenu";
 
 const store = configureStore();
 
@@ -28,8 +29,7 @@ export default function RootNavigation() {
           <Stack.Screen name="OrderCompleted" component={OrderCompleted} />
           <Stack.Screen name="SignInScreen" component={SignInScreen} />
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-
-
+          <Stack.Screen name="AddMenu" component={AddMenu} />
         </Stack.Navigator>
       </NavigationContainer>
     </ReduxProvider>
