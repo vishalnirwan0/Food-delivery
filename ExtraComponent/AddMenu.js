@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { 
     View, 
     Text, 
+    // Button, 
     TouchableOpacity, 
+    // Dimensions,
     TextInput,
     Platform,
     StyleSheet,
@@ -20,157 +22,182 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import db from "../firebase";
 
 
-const SignUpScreen = ({navigation}) => {
+const AddMenu = ({navigation}) => {
 
     const auth = getAuth();
 
     const [data, setData] = useState({
-        fullName: '',
-        email: '',
-        address: '',
-        postCode: '',
-        role: '',
-        password: '',
-        confirm_password: '',
+        restaurantName: '',
+        restaurantEmail: '',
+        restaurantAddress: '',
+        restaurantPostCode: '',
+        // coordinates: {
+        //     longitude: '',
+        //     latitude: '', 
+        // },
+        restaurantPhone: '',
         check_textInputChange: false,
         secureTextEntry: true,
         confirm_secureTextEntry: true,
     });
-
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        {label: 'Customer', value: 'customer'},
-        {label: 'Owner', value: 'owner'}
+    const [ menuItems, setMenuItems ] = useState([
+        {
+            key: '',
+            foodName: '',
+            foodPrice: '',
+            foodDescription: '',
+            foodImage: '',
+        }
     ]);
 
-    const fullNameInputChange = (val) => {
+
+    // const [open, setOpen] = useState(false);
+    // const [value, setValue] = useState(null);
+    // const [items, setItems] = useState([
+    //     {label: 'Customer', value: 'customer'},
+    //     {label: 'Owner', value: 'owner'}
+    // ]);
+
+    const restaurantNameInputChange = (val) => {
         if( val.length !== 0 ) {
             setData({
                 ...data,
-                fullName: val,
+                restaurantName: val,
                 check_textInputChange: true
             });
         } else {
             setData({
                 ...data,
-                fullName: val,
+                restaurantName: val,
                 check_textInputChange: false
             });
         }
     }
-    const emailInputChange = (val) => {
+    const restaurantEmailInputChange = (val) => {
         if( val.length !== 0 ) {
             setData({
                 ...data,
-                email: val,
+                restaurantEmail: val,
                 check_textInputChange: true
             });
         } else {
             setData({
                 ...data,
-                email: val,
+                restaurantEmail: val,
                 check_textInputChange: false
             });
         }
     }
-    const addressInputChange = (val) => {
+    const restaurantAddressInputChange = (val) => {
         if( val.length !== 0 ) {
             setData({
                 ...data,
-                address: val,
+                restaurantAddress: val,
                 check_textInputChange: true
             });
         } else {
             setData({
                 ...data,
-                address: val,
+                restaurantAddress: val,
                 check_textInputChange: false
             });
         }
     }
-    const postCodeInputChange = (val) => {
+    const restaurantPostCodeInputChange = (val) => {
         if( val.length !== 0 ) {
             setData({
                 ...data,
-                postCode: val,
+                restaurantPostCode: val,
                 check_textInputChange: true
             });
         } else {
             setData({
                 ...data,
-                postCode: val,
+                restaurantPostCode: val,
                 check_textInputChange: false
             });
         }
     }
-    const roleSelectChange = (val) => {
-        console.log(">>>>>>>>val", val);
+    const menuItemFoodName = (val) => {
         setData({
-            ...data,
-            role: val.value,
+            ...menuItems,
+            foodName: val,
             check_textInputChange: true
-        })
-    }
-
-    const handlePasswordChange = (val) => {
-        setData({
-            ...data,
-            password: val
         });
     }
+    // const roleSelectChange = (val) => {
+    //     console.log(">>>>>>>>val", val);
+    //     setData({
+    //         ...data,
+    //         role: val.value,
+    //         check_textInputChange: true
+    //     })
+    // }
 
-    const handleConfirmPasswordChange = (val) => {
-        setData({
-            ...data,
-            confirm_password: val
-        });
-    }
+    // const handlePasswordChange = (val) => {
+    //     setData({
+    //         ...data,
+    //         password: val
+    //     });
+    // }
 
-    const updateSecureTextEntry = () => {
-        setData({
-            ...data,
-            secureTextEntry: !data.secureTextEntry
-        });
-    }
+    // const handleConfirmPasswordChange = (val) => {
+    //     setData({
+    //         ...data,
+    //         confirm_password: val
+    //     });
+    // }
 
-    const updateConfirmSecureTextEntry = () => {
-        setData({
-            ...data,
-            confirm_secureTextEntry: !data.confirm_secureTextEntry
-        });
-    }
+    // const updateSecureTextEntry = () => {
+    //     setData({
+    //         ...data,
+    //         secureTextEntry: !data.secureTextEntry
+    //     });
+    // }
+
+    // const updateConfirmSecureTextEntry = () => {
+    //     setData({
+    //         ...data,
+    //         confirm_secureTextEntry: !data.confirm_secureTextEntry
+    //     });
+    // }
 
     const handleSubmit = () => {
         console.log(">>>>>>> coming here");
-        createUserWithEmailAndPassword(auth, data.email, data.password)
-            .then((res) => {
-                console.log("response user>>>>>>>", res.user);
+        // createUserWithEmailAndPassword(auth, data.email, data.password)
+        //     .then((res) => {
                 console.log(">>>>>>>. data", data);
-                const collectionRef = collection(db, "userDetails");
-                    addDoc(collectionRef, data)
+                const updatedData = data.menuItems;
+                console.log(">>>>>> updated Data")
+                const collectionRef = collection(db, "menuItems");
+                    addDoc(collectionRef, updatedData)
                     .then(() => {
-                        alert("Registration Succesful");
+                        alert("addition of menu succesful");
+
                     })
-                navigation.navigate("SignInScreen");
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
+                    .catch((err) => {
+                        alert(err.message)
+                    })
+            }
+
+    const handleAddMoreMenuItems = () => {
+        const allMenuItems = [...menuItems];
+	    allMenuItems.push({ key: "", foodName: "", foodPrice: "", foodDescription: "", foodImage: "" });
+	    setMenuItems(allMenuItems);
     }
 
     return (
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Register Now!</Text>
+            <Text style={styles.text_header}>Restaurant Menu</Text>
         </View>
          <Animatable.View 
             animation="fadeInUpBig"
             style={styles.footer}
         >
             <ScrollView>
-            <Text style={styles.text_footer}>Full Name</Text>
+            <Text style={styles.text_footer}>Reataurant Name</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
@@ -181,7 +208,7 @@ const SignUpScreen = ({navigation}) => {
                     placeholder="Your Full Name"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => fullNameInputChange(val)}
+                    onChangeText={(val) => restaurantNameInputChange(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -198,7 +225,7 @@ const SignUpScreen = ({navigation}) => {
 
             <Text style={[styles.text_footer, {
                 marginTop: 10
-            }]}>Email</Text>
+            }]}>Reataurant Email</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
@@ -209,7 +236,7 @@ const SignUpScreen = ({navigation}) => {
                     placeholder="Your Email"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => emailInputChange(val)}
+                    onChangeText={(val) => restaurantEmailInputChange(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -223,10 +250,107 @@ const SignUpScreen = ({navigation}) => {
                 </Animatable.View>
                  : null}
             </View>
+            
+            {menuItems.map((input, key) => (
+                <View key={(key+1)} style={styles.AddItemCol}>
+                <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10,
+            }]}>Food Item Name</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Name of the Food"
+                    // value={input.foodName}
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => menuItemFoodName(val)}
+                />
+            </View>
+
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Item Description</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Description of the Food"
+                    // value={input.foodDescription}
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => restaurantEmailInputChange(val)}
+                />
+            </View>
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Item Image</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Name of the Food"
+                    // value={input.foodImage}
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => restaurantEmailInputChange(val)}
+                />
+            </View>
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Item Price</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Price of the Food"
+                    // value={input.foodName}
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => restaurantEmailInputChange(val)}
+                />
+            </View>
+            </View>
+            ))}
+            <View style={styles.buttonAddItems}>
+            <TouchableOpacity
+                    style={styles.signIn}
+                    onPress={() => handleAddMoreMenuItems()}
+                >
+                <LinearGradient
+                    colors={['#000000', '#000000']}
+                    style={styles.signIn}
+                >
+                    <Text style={[styles.textSign, {
+                        color:'#fff'
+                    }]}>Add Menu Items</Text>
+                </LinearGradient>
+                </TouchableOpacity>
+            </View>
 
             <Text style={[styles.text_footer, {
                 marginTop: 10
-            }]}>Address</Text>
+            }]}>Reataurant Address</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="location-arrow"
@@ -237,7 +361,7 @@ const SignUpScreen = ({navigation}) => {
                     placeholder="Your Address"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => addressInputChange(val)}
+                    onChangeText={(val) => restaurantAddressInputChange(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -254,7 +378,7 @@ const SignUpScreen = ({navigation}) => {
 
             <Text style={[styles.text_footer, {
                 marginTop: 10
-            }]}>Post Code</Text>
+            }]}>Reataurant Post Code</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="location-arrow"
@@ -265,7 +389,7 @@ const SignUpScreen = ({navigation}) => {
                     placeholder="Your Post Code"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => postCodeInputChange(val)}
+                    onChangeText={(val) => restaurantPostCodeInputChange(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -280,7 +404,7 @@ const SignUpScreen = ({navigation}) => {
                  : null}
             </View>
 
-            <Text style={[styles.text_footer, {
+            {/* <Text style={[styles.text_footer, {
                 marginTop: 10
             }]}>Role</Text>
             <View style={styles.action}>
@@ -381,11 +505,12 @@ const SignUpScreen = ({navigation}) => {
                     />
                     }
                 </TouchableOpacity>
-            </View>
+            </View> */}
+
             <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>
+                {/* <Text style={styles.color_textPrivate}>
                     By signing up you agree to our
-                </Text>
+                </Text> */}
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
                 <Text style={styles.color_textPrivate}>{" "}and</Text>
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Privacy policy</Text>
@@ -401,22 +526,22 @@ const SignUpScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color:'#fff'
-                    }]}>Sign Up</Text>
+                    }]}>Update Menu</Text>
                 </LinearGradient>
                 </TouchableOpacity>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={() => navigation.navigate("SignInScreen")}
                     style={[styles.signIn, {
-                        borderColor: '#000000',
+                        borderColor: '#009387',
                         borderWidth: 1,
                         marginTop: 15
                     }]}
                 >
                     <Text style={[styles.textSign, {
-                        color: '#000000'
+                        color: '#009387'
                     }]}>Sign In</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             </ScrollView>
         </Animatable.View>
@@ -424,7 +549,7 @@ const SignUpScreen = ({navigation}) => {
     );
 };
 
-export default SignUpScreen;
+export default AddMenu;
 
 const styles = StyleSheet.create({
     container: {
@@ -452,7 +577,7 @@ const styles = StyleSheet.create({
     },
     text_footer: {
         color: '#05375a',
-        fontSize: 18
+        fontSize: 18,
     },
     action: {
         flexDirection: 'row',
@@ -460,6 +585,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5
+    },
+    AddItemCol: {
+        flex: 1,
+        width: '25%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingLeft: 1,
+        paddingRight: 1,
     },
     textInput: {
         flex: 1,
@@ -470,6 +604,11 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         marginTop: 30
+    },
+    buttonAddItems: {
+        alignItems: 'center',
+        flex: 1,
+        width: '25%',
     },
     signIn: {
         width: '100%',
