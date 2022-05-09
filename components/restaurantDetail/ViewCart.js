@@ -30,9 +30,16 @@ export default function ViewCart({ navigation }) {
       addDoc(collectionRef, {
         items: items,
         restaurantName: restaurantName,
+        userid : localStorage.getItem('userId'),
         createdAt: serverTimestamp(),
+        total: totalUSD,
       });
-      navigation.navigate("OrderCompleted");
+      if(localStorage.getItem("userData")){
+        navigation.navigate("OrderCompleted");
+      }else{
+        navigation.navigate("SignInScreen");
+      }
+      
 
     //   .then(() => {
     //     setTimeout(() => {

@@ -14,13 +14,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
+import { collection, query, where, getDocs } from "firebase/firestore";
+import db from "../firebase";
 
 // import { useTheme } from 'react-native-paper';
 
 // import { AuthContext } from '../components/context';
 
 // import Users from '../model/users';
+//var querySnapshot
 const SignInScreen = ({ navigation }) => {
 
     const auth = getAuth();
@@ -79,49 +81,30 @@ const SignInScreen = ({ navigation }) => {
             secureTextEntry: !data.secureTextEntry
         });
     }
-
-    // const handleValidUser = (val) => {
-    //     if( val.trim().length >= 4 ) {
-    //         setData({
-    //             ...data,
-    //             isValidUser: true
-    //         });
-    //     } else {
-    //         setData({
-    //             ...data,
-    //             isValidUser: false
-    //         });
-    //     }
-    // }
-
-    // const loginHandle = (userName, password) => {
-
-    //     const foundUser = Users.filter( item => {
-    //         return userName == item.username && password == item.password;
-    //     } );
-
-    //     if ( data.username.length == 0 || data.password.length == 0 ) {
-    //         Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
-    //             {text: 'Okay'}
-    //         ]);
-    //         return;
-    //     }
-
-    //     if ( foundUser.length == 0 ) {
-    //         Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-    //             {text: 'Okay'}
-    //         ]);
-    //         return;
-    //     }
-    //     signIn(foundUser);
-    // }
-
-    const handleSubmit = () => {
+// Sign in with account and put information into localstorage
+    const handleSubmit =() => {
         signInWithEmailAndPassword(auth, data.email, data.password)
-            .then((res) => {
+            .then(async(res) => {
                 console.log(res.user);
-                 alert("Sign In Succesful")
+                 const q = query(collection(db, "userDetails"), where("email", "==", data.email));
+                 localStorage.setItem('userData', res.user.email);
+                 localStorage.setItem('userId', res.user.reloadUserInfo.localId)
+                 //console.log(q);
+                 const querySnapshot = await getDocs(q);
+                 console.log(querySnapshot);
+                 querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data());
+                    localStorage.setItem('address', doc.data().address);
+                    localStorage.setItem('postcode', doc.data().postCode);
+                    localStorage.setItem('name',doc.data().fullName);
+                    localStorage.setItem('role',doc.data().role);
+                  });
+                  console.log(localStorage);
+                  alert("Sign In Succesful");
                 navigation.navigate("Home");
+                window.location.reload();
+
             })
             .catch((err) => {
                 alert(err.message)
@@ -133,7 +116,10 @@ const SignInScreen = ({ navigation }) => {
             .then((res) => {
                 console.log(res.user);
                  alert("Sign In Succesful")
+                localStorage.setItem('userData', JSON.stringify(res.user.email));
+                console.log(localStorage);
                 navigation.navigate("Home");
+                window.location.reload();
             })
             .catch((err) => {
                 alert(err.message)

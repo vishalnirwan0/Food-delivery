@@ -4,27 +4,28 @@ import { render } from 'react-dom';
 
 export default function HeaderTabs({ navigation }) {
 
-const [activeTab, setActiveTab] = useState("Sign In");
-
   return (
-    
     <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: 40 }}>
-      <HeaderButton
-      text="Sign In" 
-      btnColor="black" 
-      textColor="white" 
-      activeTab={activeTab} 
-      setActiveTab={setActiveTab}
-      navigation={navigation}
-      />
-      <HeaderButton
-      text="Sign Up" 
-      btnColor="white" 
-      textColor="black"
-      activeTab={activeTab} 
-      setActiveTab={setActiveTab}
-      navigation={navigation}
-      />
+    <Text
+    style={{
+      fontSize: 25,
+      fontWeight: "300",
+      marginTop: 10,
+      marginHorizontal: 15,
+    }}
+  >
+    Welcome!
+  </Text>
+    <Text
+    style={{
+      fontSize: 25,
+      fontWeight: "300",
+      marginTop: 10,
+      marginHorizontal: 15,
+    }}
+  >
+    {localStorage.getItem("name")}
+  </Text>
     </View>
   )
 }
@@ -41,14 +42,16 @@ style={{
   onPress={() => {
     props.setActiveTab(props.text)
     console.log(">>>>>>>>>>. props.text >>>>>", props.text);
-    props.text === "Sign In" ?  navigation.navigate("SignInScreen") : navigation.navigate("SignUpScreen");
+    localStorage.clear();
+    navigation.navigate("Home");
+    window.location.reload()
   }}
 >   
     <Text
     style={{ 
       color: props.activeTab === props.text? 'white': 'black',
       fontSize: 15,
-      fontWeight: 900 
+      fontWeight: 800 
       }}>
       {props.text}
     </Text>

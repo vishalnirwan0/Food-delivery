@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text ,ScrollView} from "react-native";
 import { Divider } from "react-native-elements";
 import About from "../components/restaurantDetail/About";
 import MenuItems from "../components/restaurantDetail/MenuItems";
 import ViewCart from "../components/restaurantDetail/ViewCart";
-
+import BottomTabs from "../components/home/BottomTabs";
 const foods = [
   {
     title: "Lasagna",
@@ -48,6 +48,7 @@ const foods = [
 export default function RestaurantDetail({ route, navigation }) {
   return (
     <View>
+      <BottomTabs navigation={navigation}/>
       <About route={route} />
       <Divider width={1.8} style={{ marginVertical: 20 }} />
        <MenuItems restaurantName={route.params.name} foods={foods} />

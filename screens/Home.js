@@ -6,15 +6,18 @@ import Categories from "../components/home/Categories";
 import HeaderTabs from "../components/home/HeaderTabs";
 import RestaurantItems, { localRestaurants } from "../components/home/RestaurantItems";
 import SearchBar from "../components/home/SearchBar";
+import LoginHeader from "../components/home/LoginHeader";
+// import Maps from "../components/FinishOrder/Maps";
 
 
 const YELP_API_KEY =
   "LGDfeIKa3KHNxm5oNFOO9Qg_cRWRHG2KC6dPWDBG_siK1qYj6srJQKTucIZ5I0YmZK6Cn-iKhuoC01l2zUG_fDdlXmUC5xZdpCSoWzxtop5mmwLwR4xCB2DTqotVYnYx";
 
-
+//const [userstutes, setuser] = useState(false);
 export default function Home({ navigation }) {
     const [restaurantData, setRestaurantData] = useState(localRestaurants);
     const [city, setCity] = useState("southampton");
+
     // const [activeTab, setActiveTab] = useState("Delivery");
 
 
@@ -43,9 +46,10 @@ export default function Home({ navigation }) {
     return(
         <SafeAreaView style={{ backgroundColor: '#eee', flex: 1 }} >
         <View style={{ backgroundColor: 'white', padding: 15 }} >
-        <BottomTabs />
+        <BottomTabs navigation={navigation}/>
         <Divider width={1} />
-            <HeaderTabs navigation={navigation}/>
+        {localStorage.getItem("userData") ?(<LoginHeader navigation={navigation}/>):(<HeaderTabs navigation={navigation}/>)}
+            
             <SearchBar cityHandler={setCity} />
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -55,6 +59,7 @@ export default function Home({ navigation }) {
         navigation={navigation}
         />
         </ScrollView>
+        {/* <Maps/> */}
         </SafeAreaView>
     )
 }

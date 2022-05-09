@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import LottieView from "lottie-react-native";
+import { Divider } from "react-native-elements";
 import { collection, query, limit, onSnapshot, orderBy } from "firebase/firestore"
 import db from "../firebase";
 import MenuItems from "../components/restaurantDetail/MenuItems";
+import Maps from "../components/FinishOrder/Maps"
+import BottomTabs from "../components/home/BottomTabs";
 
-export default function OrderCompleted() {
+export default function OrderCompleted(navigation) {
   const [lastOrder, setLastOrder] = useState({
     items: [
       {
@@ -61,24 +64,13 @@ export default function OrderCompleted() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       {/* green checkmark */}
-      <View
-        style={{
-          margin: 15,
-          alignItems: "center",
-          height: "100%",
-        }}
-      >
-        {/* <LottieView
-          style={{ height: 100, alignSelf: "center", marginBottom: 30 }}
-          source={require("../assets/animations/check-mark.json")}
-          autoPlay
-          speed={0.5}
-          loop={false}
-        /> */}
+      <View>
+        <BottomTabs navigation={navigation}/>
+        <Divider width={1} />
+        <ScrollView>
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
           Your order at {restaurantName} has been placed for {totalUSD}
         </Text>
-        <ScrollView>
           <MenuItems
             foods={lastOrder.items}
             hideCheckbox={true}
@@ -91,7 +83,9 @@ export default function OrderCompleted() {
             speed={0.5}
           />
         </ScrollView>
+        <Maps/>
       </View>
+      
     </SafeAreaView>
   );
 }   

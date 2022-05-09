@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-export default function BottomTabs() {
+export default function BottomTabs({ navigation }) {
   return (
     <View
       style={{
@@ -12,16 +12,17 @@ export default function BottomTabs() {
         justifyContent: "space-between",
       }}
     >
-      <Icon icon="home" text="Home" />
-      <Icon icon="search" text="Browse" />
-      <Icon icon="shopping-bag" text="Grocery" />
-      <Icon icon="receipt" text="Orders" />
-      <Icon icon="user" text="Account" />
+      <Icon icon="home" text="Home" navigation={navigation}/>
+      <Icon icon="search" text="Browse" navigation={navigation}/>
+      <Icon icon="shopping-bag" text="Grocery" navigation={navigation}/>
+      <Icon icon="receipt" text="Orders" navigation={navigation}/>
+      <Icon icon="user" text="Account" navigation={navigation}/>
+      {localStorage.getItem("userData") ?(<Icon icon="sign-out-alt" text="Log out" navigation={navigation}/>):(<></>)}
     </View>
   );
 }
 
-const Icon = (props) => (
+const Icon = ({ navigation,...props}) => (
   <TouchableOpacity>
     <View>
       <FontAwesome5
@@ -30,6 +31,31 @@ const Icon = (props) => (
         style={{
           marginBottom: 3,
           alignSelf: "center",
+        }}
+        onPress={() =>{
+          if(props.text == "Log out"){
+            localStorage.clear();
+            sessionStorage.clear();
+            navigation.navigate("Home");
+            window.location.reload();
+          }
+          else if(props.text == "Home"){
+            navigation.navigate("Home");
+          }
+          else if(props.text == "Orders"){
+            if(localStorage.getItem('userData')){
+              navigation.navigate("HistoryOrder");
+            }else{
+              navigation.navigate("SignInScreen")
+            }
+          }
+          else if(props.text == "Account"){
+            if(localStorage.getItem('userData')){
+              navigation.navigate("Account");
+            }else{
+              navigation.navigate("SignInScreen")
+            }
+          }
         }}
       />
       <Text>{props.text}</Text>
