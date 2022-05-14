@@ -11,6 +11,8 @@ import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import Account from "./screens/Account";
 import HistoryOrder from "./screens/HistoryOrder";
+import Admin from "./screens/Admin";
+
 
 
 const store = configureStore();
@@ -27,15 +29,33 @@ export default function RootNavigation() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
           {localStorage.getItem("userData") ?(
+          <>
+            {(localStorage.getItem("role")=="Admin")? (<Stack.Screen name="Admin" component={Admin}/>):(
             <>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="RestaurantDetail" component={RestaurantDetail} paths="home/detail" />
-          <Stack.Screen name="OrderCompleted" component={OrderCompleted} />
-          <Stack.Screen name="SignInScreen" component={SignInScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-          <Stack.Screen name="Account" component={Account} />
-          <Stack.Screen name="HistoryOrder" component={HistoryOrder} />
+            {(localStorage.getItem("role")=="customer")? (
+              <>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="RestaurantDetail" component={RestaurantDetail} paths="home/detail" />
+              <Stack.Screen name="OrderCompleted" component={OrderCompleted} />
+              <Stack.Screen name="SignInScreen" component={SignInScreen} />
+              <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+              <Stack.Screen name="Account" component={Account} />
+              <Stack.Screen name="HistoryOrder" component={HistoryOrder} />
+              </>
+              ) : (
+              <>
+              {(localStorage.getItem("role")=="owner")? (
+              <>
+              <Stack.Screen name="SignInScreen" component={SignInScreen} />
+              <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+              </>
+              ):(<></>)}
+              </>
+              )
+              }
             </>
+            )}
+          </>
           ):(
             <>
           <Stack.Screen name="Home" component={Home} />

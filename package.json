@@ -17,6 +17,8 @@
     "react-native-gesture-handler": "^2.4.0",
     "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-reanimated": "^2.7.0",
+    "react-native-step-indicator": "^1.0.3",
+    "react-native-table-component": "^1.2.2",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.8",

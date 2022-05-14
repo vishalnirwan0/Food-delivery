@@ -94,16 +94,25 @@ const SignInScreen = ({ navigation }) => {
                  console.log(querySnapshot);
                  querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
+                    //console.log(doc.id, " => ", doc.data());
                     localStorage.setItem('address', doc.data().address);
                     localStorage.setItem('postcode', doc.data().postCode);
                     localStorage.setItem('name',doc.data().fullName);
                     localStorage.setItem('role',doc.data().role);
+                    // if(doc.data().role == 'Admin'){
+                    //     localStorage.setItem('isAdmin',true);
+                    // }
                   });
                   console.log(localStorage);
                   alert("Sign In Succesful");
-                navigation.navigate("Home");
-                window.location.reload();
+                if(localStorage.getItem('role') == "Admin"){
+                    window.location.reload();
+                    navigation.navigate("Admin");
+                }else if (localStorage.getItem('role') == "customer"){
+                    navigation.navigate("Home");
+                    window.location.reload();
+                }
+                
 
             })
             .catch((err) => {

@@ -33,6 +33,7 @@ export default function ViewCart({ navigation }) {
         userid : localStorage.getItem('userId'),
         createdAt: serverTimestamp(),
         total: totalUSD,
+        status: 'created',
       });
       if(localStorage.getItem("userData")){
         navigation.navigate("OrderCompleted");

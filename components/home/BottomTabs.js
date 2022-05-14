@@ -13,8 +13,8 @@ export default function BottomTabs({ navigation }) {
       }}
     >
       <Icon icon="home" text="Home" navigation={navigation}/>
-      <Icon icon="search" text="Browse" navigation={navigation}/>
-      <Icon icon="shopping-bag" text="Grocery" navigation={navigation}/>
+      {/* <Icon icon="search" text="Browse" navigation={navigation}/>
+      <Icon icon="shopping-bag" text="Grocery" navigation={navigation}/> */}
       <Icon icon="receipt" text="Orders" navigation={navigation}/>
       <Icon icon="user" text="Account" navigation={navigation}/>
       {localStorage.getItem("userData") ?(<Icon icon="sign-out-alt" text="Log out" navigation={navigation}/>):(<></>)}
@@ -23,7 +23,31 @@ export default function BottomTabs({ navigation }) {
 }
 
 const Icon = ({ navigation,...props}) => (
-  <TouchableOpacity>
+  <TouchableOpacity onPress={() =>{
+    if(props.text == "Log out"){
+      localStorage.clear();
+      sessionStorage.clear();
+      navigation.navigate("Home");
+      window.location.reload();
+    }
+    else if(props.text == "Home"){
+      navigation.navigate("Home");
+    }
+    else if(props.text == "Orders"){
+      if(localStorage.getItem('userData')){
+        navigation.navigate("HistoryOrder");
+      }else{
+        navigation.navigate("SignInScreen")
+      }
+    }
+    else if(props.text == "Account"){
+      if(localStorage.getItem('userData')){
+        navigation.navigate("Account");
+      }else{
+        navigation.navigate("SignInScreen")
+      }
+    }
+  }}>
     <View>
       <FontAwesome5
         name={props.icon}
@@ -32,31 +56,7 @@ const Icon = ({ navigation,...props}) => (
           marginBottom: 3,
           alignSelf: "center",
         }}
-        onPress={() =>{
-          if(props.text == "Log out"){
-            localStorage.clear();
-            sessionStorage.clear();
-            navigation.navigate("Home");
-            window.location.reload();
-          }
-          else if(props.text == "Home"){
-            navigation.navigate("Home");
-          }
-          else if(props.text == "Orders"){
-            if(localStorage.getItem('userData')){
-              navigation.navigate("HistoryOrder");
-            }else{
-              navigation.navigate("SignInScreen")
-            }
-          }
-          else if(props.text == "Account"){
-            if(localStorage.getItem('userData')){
-              navigation.navigate("Account");
-            }else{
-              navigation.navigate("SignInScreen")
-            }
-          }
-        }}
+        
       />
       <Text>{props.text}</Text>
     </View>

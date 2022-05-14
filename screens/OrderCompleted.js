@@ -8,8 +8,9 @@ import db from "../firebase";
 import MenuItems from "../components/restaurantDetail/MenuItems";
 import Maps from "../components/FinishOrder/Maps"
 import BottomTabs from "../components/home/BottomTabs";
+import OrderSratus from "../components/FinishOrder/Orderstatus";
 
-export default function OrderCompleted(navigation) {
+export default function OrderCompleted({navigation}) {
   const [lastOrder, setLastOrder] = useState({
     items: [
       {
@@ -58,6 +59,7 @@ export default function OrderCompleted(navigation) {
               })
 
               console.log(">>>>>>> ubsubscribe", unsubscribe);
+              console.log(lastOrder);
     return () => unsubscribe();
   }, []);
 
@@ -67,6 +69,8 @@ export default function OrderCompleted(navigation) {
       <View>
         <BottomTabs navigation={navigation}/>
         <Divider width={1} />
+        <View><OrderSratus/></View>
+        
         <ScrollView>
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
           Your order at {restaurantName} has been placed for {totalUSD}
