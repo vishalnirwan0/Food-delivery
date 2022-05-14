@@ -12,7 +12,8 @@ import SignUpScreen from "./screens/SignUpScreen";
 import Account from "./screens/Account";
 import HistoryOrder from "./screens/HistoryOrder";
 import Admin from "./screens/Admin";
-
+import MerchantMenu from "./screens/MerchantMenu";
+import MerchantHome from "./screens/MerchantHome";
 
 
 const store = configureStore();
@@ -27,7 +28,7 @@ export default function RootNavigation() {
   return (
     <ReduxProvider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+        <Stack.Navigator initialRouteName="MerchantHome" screenOptions={screenOptions}>
           {localStorage.getItem("userData") ?(
           <>
             {(localStorage.getItem("role")=="Admin")? (<Stack.Screen name="Admin" component={Admin}/>):(
@@ -48,6 +49,8 @@ export default function RootNavigation() {
               <>
               <Stack.Screen name="SignInScreen" component={SignInScreen} />
               <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+              <Stack.Screen name="MerchantMenu" component={MerchantMenu} />
+              <Stack.Screen name="MerchantHome" component={MerchantHome} />
               </>
               ):(<></>)}
               </>
@@ -62,8 +65,10 @@ export default function RootNavigation() {
           <Stack.Screen name="RestaurantDetail" component={RestaurantDetail} paths="home/detail" />
           <Stack.Screen name="SignInScreen" component={SignInScreen} />
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+          
           </>
-          )}
+          )
+          }
         </Stack.Navigator>
       </NavigationContainer>
     </ReduxProvider>
