@@ -6,7 +6,7 @@ import db from "../../firebase";
 //import Items from "./Items";
 
 
-const docRef = doc(db, "restuarants",sessionStorage.getItem('id'));
+
 //const q = query(collection(db, "restuarants"));
 const styles = StyleSheet.create({
   timeStyle: {
@@ -25,6 +25,7 @@ var querySnapshot;
 export default class Orders extends Component{
   
   getOrder= async () => {
+    const docRef = doc(db, "restuarants",sessionStorage.getItem('id'));
     var newres = [];
     var newitems= [];
     const docSnap = await getDoc(docRef);
