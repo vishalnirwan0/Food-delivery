@@ -171,14 +171,14 @@ const AddMenu = ({navigation}) => {
                     addDoc(collectionRef, data)
                     .then((res) => {
                         alert("addition of menu succesful");
-                        sessionStorage.setItem('id',res.id);
+                        localStorage.setItem('id',res.id);
                     })
                     .catch((err) => {
                         alert(err.message)
                     })
-                    sessionStorage.setItem("res",data.restaurantName);
-                    sessionStorage.setItem("address", data.restaurantAddress);
-                    sessionStorage.setItem("postcode",data.restaurantPostCode);
+                    localStorage.setItem("res",data.restaurantName);
+                    localStorage.setItem("address", data.restaurantAddress);
+                    localStorage.setItem("postcode",data.restaurantPostCode);
                     navigation.navigate("MerchantHome");
             }
             const handleSubmitadditem = () => {
@@ -186,7 +186,7 @@ const AddMenu = ({navigation}) => {
                         console.log(">>>>>>>. data", data);
                         const updatedData = data;
                         console.log(">>>>>>. MmnuItems", menuItems);
-                        const collectionRef = doc(db, "restuarants",sessionStorage.getItem('id'));
+                        const collectionRef = doc(db, "restuarants",localStorage.getItem('id'));
                             updateDoc(collectionRef, {
                                 menuItems:menuItems
                             })
@@ -219,11 +219,11 @@ const AddMenu = ({navigation}) => {
             style={styles.footer}
         >
             <ScrollView>
-                {sessionStorage.getItem('res')?(
+                {localStorage.getItem('res')?(
                 <>
                  <Text style={styles.text_footer}>Reataurant Name</Text>
             <View style={styles.action}>
-            <Text style={styles.text_footer}>{sessionStorage.getItem('res')}</Text>
+            <Text style={styles.text_footer}>{localStorage.getItem('res')}</Text>
             </View>
 
             <Text style={[styles.text_footer, {
@@ -329,14 +329,14 @@ const AddMenu = ({navigation}) => {
                 marginTop: 10
             }]}>Reataurant Address</Text>
             <View style={styles.action}>
-            <Text style={styles.text_footer}>{sessionStorage.getItem('address')}</Text>
+            <Text style={styles.text_footer}>{localStorage.getItem('address')}</Text>
             </View>
 
             <Text style={[styles.text_footer, {
                 marginTop: 10
             }]}>Reataurant Post Code</Text>
             <View style={styles.action}>
-            <Text style={styles.text_footer}>{sessionStorage.getItem('postcode')}</Text>
+            <Text style={styles.text_footer}>{localStorage.getItem('postcode')}</Text>
             </View>
             <View style={styles.textPrivate}>
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>

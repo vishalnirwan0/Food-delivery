@@ -25,7 +25,7 @@ var querySnapshot;
 export default class Orders extends Component{
   
   getOrder= async () => {
-    const docRef = doc(db, "restuarants",sessionStorage.getItem('id'));
+    const docRef = doc(db, "restuarants",localStorage.getItem('id'));
     var newres = [];
     var newitems= [];
     const docSnap = await getDoc(docRef);

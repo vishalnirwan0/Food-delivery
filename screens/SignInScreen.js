@@ -117,10 +117,10 @@ const SignInScreen = ({ navigation }) => {
                     querySnapshot1.forEach((doc) => {
                         //console.log(doc.id, " => ", doc.data());
                         if(doc.data().restaurantName != null){
-                            sessionStorage.setItem('res', doc.data().restaurantName);
-                            sessionStorage.setItem('address',doc.data().restaurantAddress);
-                            sessionStorage.setItem('postcode',doc.data().restaurantPostCode);
-                            sessionStorage.setItem('id',doc.id);
+                            localStorage.setItem('res', doc.data().restaurantName);
+                            localStorage.setItem('address',doc.data().restaurantAddress);
+                            localStorage.setItem('postcode',doc.data().restaurantPostCode);
+                            localStorage.setItem('id',doc.id);
                         }
                       });
                     navigation.navigate("MerchantHome");
