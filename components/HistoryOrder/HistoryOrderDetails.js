@@ -7,8 +7,8 @@ import { doc, getDoc } from "firebase/firestore"
 import db from "../../firebase";
 import MenuItems from "../restaurantDetail/MenuItems";
 import Maps from "../FinishOrder/Maps"
-import BottomTabs from "../home/BottomTabs";
 import OrderStatus from "../FinishOrder/Orderstatus";
+import OrderInfo from "../FinishOrder/OrderInfo";
 
 export default function HistoryOrderDetails({navigation}) {
   const [lastOrder, setLastOrder] = useState([]);
@@ -31,9 +31,7 @@ export default function HistoryOrderDetails({navigation}) {
         <View><OrderStatus/></View>
         
         <ScrollView>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          Your order at {restaurantName} has been placed for {USD}
-        </Text>
+        <OrderInfo/>
           <MenuItems
             foods={lastOrder}
             hideCheckbox={true}

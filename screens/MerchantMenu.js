@@ -13,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { collection, addDoc } from "firebase/firestore"
+import { collection, addDoc,updateDoc ,doc} from "firebase/firestore"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import MerchantBottomTabs from "../components/home/MerchantBottomTabs";
 
@@ -33,6 +33,7 @@ const AddMenu = ({navigation}) => {
         secureTextEntry: true,
         confirm_secureTextEntry: true,
         admin_authorization: false,
+        owner_id : localStorage.getItem('userId'),
     });
     const [ menuItems, setMenuItems ] = useState([
         {
@@ -168,15 +169,35 @@ const AddMenu = ({navigation}) => {
                 console.log(">>>>>>. MmnuItems", menuItems);
                 const collectionRef = collection(db, "restuarants");
                     addDoc(collectionRef, data)
-                    .then(() => {
+                    .then((res) => {
                         alert("addition of menu succesful");
-
+                        sessionStorage.setItem('id',res.id);
                     })
                     .catch((err) => {
                         alert(err.message)
                     })
+                    sessionStorage.setItem("res",data.restaurantName);
+                    sessionStorage.setItem("address", data.restaurantAddress);
+                    sessionStorage.setItem("postcode",data.restaurantPostCode);
                     navigation.navigate("MerchantHome");
             }
+            const handleSubmitadditem = () => {
+                console.log(">>>>>>> coming here again");
+                        console.log(">>>>>>>. data", data);
+                        const updatedData = data;
+                        console.log(">>>>>>. MmnuItems", menuItems);
+                        const collectionRef = doc(db, "restuarants",sessionStorage.getItem('id'));
+                            updateDoc(collectionRef, {
+                                menuItems:menuItems
+                            })
+                            .then(() => {
+                                alert("addition of menu succesful");
+        
+                            })
+                            .catch((err) => {
+                                alert(err.message)
+                            })
+                    }
 
     const handleAddMoreMenuItems = () => {
         const allMenuItems = [...menuItems];
@@ -198,7 +219,149 @@ const AddMenu = ({navigation}) => {
             style={styles.footer}
         >
             <ScrollView>
-            <Text style={styles.text_footer}>Reataurant Name</Text>
+                {sessionStorage.getItem('res')?(
+                <>
+                 <Text style={styles.text_footer}>Reataurant Name</Text>
+            <View style={styles.action}>
+            <Text style={styles.text_footer}>{sessionStorage.getItem('res')}</Text>
+            </View>
+
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Reataurant Email</Text>
+            <View style={styles.action}>
+            <Text style={styles.text_footer}>{localStorage.getItem('userData')}</Text>
+            </View>
+            {menuItems.map((input, key) => (
+                <View key={(key+1)} style={styles.AddItemCol}>
+                <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10,
+            }]}>Food Item Name</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Name of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itemnameInputChange(val,key)}
+                />
+            </View>
+
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Item Description</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Description of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itemdescriptionInputChange(val,key)}
+                />
+            </View>
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Item Image</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Image of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itemimageInputChange(val,key)}
+                />
+            </View>
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Item Price</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Price of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itempriceInputChange(val,key)}
+                />
+            </View>
+            </View>
+            ))}
+            <View style={styles.buttonAddItems}>
+            <TouchableOpacity
+                    style={styles.signIn}
+                    onPress={() => handleAddMoreMenuItems()}
+                >
+                <LinearGradient
+                    colors={['#000000', '#000000']}
+                    style={styles.signIn}
+                >
+                    <Text style={[styles.textSign, {
+                        color:'#fff'
+                    }]}>Add Menu Items</Text>
+                </LinearGradient>
+                </TouchableOpacity>
+            </View>
+
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Reataurant Address</Text>
+            <View style={styles.action}>
+            <Text style={styles.text_footer}>{sessionStorage.getItem('address')}</Text>
+            </View>
+
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Reataurant Post Code</Text>
+            <View style={styles.action}>
+            <Text style={styles.text_footer}>{sessionStorage.getItem('postcode')}</Text>
+            </View>
+            <View style={styles.textPrivate}>
+                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
+                <Text style={styles.color_textPrivate}>{" "}and</Text>
+                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Privacy policy</Text>
+            </View>
+            <View style={styles.button}>
+                <TouchableOpacity
+                    style={styles.signIn}
+                    onPress={() => handleSubmitadditem()}
+                >
+                <LinearGradient
+                    colors={['#000000', '#000000']}
+                    style={styles.signIn}
+                >
+                    <Text style={[styles.textSign, {
+                        color:'#fff'
+                    }]}>Update Menu</Text>
+                </LinearGradient>
+                </TouchableOpacity>
+            </View>
+                </>
+                ):(
+                <>
+                 <Text style={styles.text_footer}>Reataurant Name</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
@@ -251,7 +414,6 @@ const AddMenu = ({navigation}) => {
                 </Animatable.View>
                  : null}
             </View>
-            
             {menuItems.map((input, key) => (
                 <View key={(key+1)} style={styles.AddItemCol}>
                 <View style={{ alignSelf: 'center', padding: 12}}>
@@ -400,7 +562,6 @@ const AddMenu = ({navigation}) => {
                 </Animatable.View>
                  : null}
             </View>
-
             <View style={styles.textPrivate}>
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
                 <Text style={styles.color_textPrivate}>{" "}and</Text>
@@ -417,10 +578,15 @@ const AddMenu = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color:'#fff'
-                    }]}>Update Menu</Text>
+                    }]}>Add new restaurant</Text>
                 </LinearGradient>
                 </TouchableOpacity>
             </View>
+                </>
+                )}
+           
+            
+        
             </ScrollView>
         </Animatable.View>
       </View>

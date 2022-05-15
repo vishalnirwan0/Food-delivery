@@ -6,6 +6,7 @@ import { collection, query, limit, onSnapshot, orderBy } from "firebase/firestor
 import MenuItems from "../components/restaurantDetail/MenuItems";
 import ViewCart from "../components/restaurantDetail/ViewCart";
 import MerchantBottomTabs from "../components/home/MerchantBottomTabs";
+import ItemsDetails from "../components/Merchant/ItemsDetails";
 
 const foods = [
   {
@@ -93,8 +94,7 @@ return () => fetchdata();
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>
             {data.restaurantName} 
         </Text>
-       <MenuItems restaurantName={data.restaurantName} foods={foods} />
-      <ViewCart navigation={navigation} />
+        <ItemsDetails/>
         </View>
     );
 }

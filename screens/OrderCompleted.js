@@ -9,17 +9,12 @@ import MenuItems from "../components/restaurantDetail/MenuItems";
 import Maps from "../components/FinishOrder/Maps"
 import BottomTabs from "../components/home/BottomTabs";
 import OrderSratus from "../components/FinishOrder/Orderstatus";
+import OrderInfo from "../components/FinishOrder/OrderInfo";
 
 export default function OrderCompleted({navigation}) {
   const [lastOrder, setLastOrder] = useState({
     items: [
-      {
-        title: "Bologna",
-        description: "With butter lettuce, tomato and sauce bechamel",
-        price: "$13.50",
-        image:
-          "https://www.modernhoney.com/wp-content/uploads/2019/08/Classic-Lasagna-14-scaled.jpg",
-      },
+      { },
     ],
   });
 
@@ -72,9 +67,7 @@ export default function OrderCompleted({navigation}) {
         <View><OrderSratus/></View>
         
         <ScrollView>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          Your order at {restaurantName} has been placed for {totalUSD}
-        </Text>
+        <OrderInfo/>
           <MenuItems
             foods={lastOrder.items}
             hideCheckbox={true}
@@ -87,6 +80,7 @@ export default function OrderCompleted({navigation}) {
             speed={0.5}
           />
         </ScrollView>
+
         <Maps/>
       </View>
       

@@ -23,11 +23,12 @@ export default function ViewCart({ navigation }) {
     currency: "USD",
   });
 
-  const addOrderToFireBase = () => {
+  const addOrderToFireBase = async() => {
     setLoading(true);
     // const db = getFirestore(firebase);
+    const currenttime = new Date().setHours(new Date().getHours() + 1);
     const collectionRef = collection(db, "orders");
-      addDoc(collectionRef, {
+    const docRef =  await addDoc(collectionRef, {
         items: items,
         restaurantName: restaurantName,
         userid : localStorage.getItem('userId'),
@@ -35,6 +36,7 @@ export default function ViewCart({ navigation }) {
         total: totalUSD,
         status: 'created',
       });
+      localStorage.setItem('currentOrder', docRef.id)
       if(localStorage.getItem("userData")){
         navigation.navigate("OrderCompleted");
       }else{
