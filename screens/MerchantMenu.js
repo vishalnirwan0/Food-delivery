@@ -13,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { collection, addDoc,updateDoc ,doc} from "firebase/firestore"
+import { collection, addDoc,updateDoc ,doc,getDoc} from "firebase/firestore"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import MerchantBottomTabs from "../components/home/MerchantBottomTabs";
 
@@ -181,14 +181,22 @@ const AddMenu = ({navigation}) => {
                     localStorage.setItem("postcode",data.restaurantPostCode);
                     navigation.navigate("MerchantHome");
             }
-            const handleSubmitadditem = () => {
+            const handleSubmitadditem = async() => {
                 console.log(">>>>>>> coming here again");
                         console.log(">>>>>>>. data", data);
                         const updatedData = data;
-                        console.log(">>>>>>. MmnuItems", menuItems);
                         const collectionRef = doc(db, "restuarants",localStorage.getItem('id'));
+                        const docSnap= await getDoc(collectionRef)
+                        const allMenuItems = [...menuItems];
+                        console.log(">>>>>>. MmnuItems", allMenuItems);
+                        docSnap.data().menuItems.map((input, i) => (
+                            allMenuItems.push(docSnap.data().menuItems[i])
+                        ))
+                            //console.log(">>>>>>. MmnuItems", allMenuItems);
+                            //setMenuItems(allMenuItems);
+                            //console.log(">>>>>>. MmnuItems", menuItems);
                             updateDoc(collectionRef, {
-                                menuItems:menuItems
+                                menuItems:allMenuItems
                             })
                             .then(() => {
                                 alert("addition of menu succesful");
@@ -197,6 +205,7 @@ const AddMenu = ({navigation}) => {
                             .catch((err) => {
                                 alert(err.message)
                             })
+                           
                     }
 
     const handleAddMoreMenuItems = () => {

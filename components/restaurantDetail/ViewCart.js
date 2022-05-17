@@ -35,6 +35,10 @@ export default function ViewCart({ navigation }) {
         createdAt: serverTimestamp(),
         total: totalUSD,
         status: 'created',
+        customerName: localStorage.getItem('name'),
+        customeraddress: localStorage.getItem('address'),
+        customerpostcode: localStorage.getItem('postcode'),
+        customeremail:localStorage.getItem('userData'),
       });
       localStorage.setItem('currentOrder', docRef.id)
       if(localStorage.getItem("userData")){

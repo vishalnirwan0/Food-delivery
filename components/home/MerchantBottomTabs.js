@@ -36,11 +36,11 @@ const Icon = ({ navigation,...props}) => (
     else if(props.text == "Home"){
       navigation.navigate("MerchantHome");
     }
-    else if(props.text == "Manage Orders"){
-      if(localStorage.getItem('userData')){
-        navigation.navigate("HistoryOrder");
+    else if(props.text == "Manage orders"){
+      if(localStorage.getItem('res')){
+        navigation.navigate("MerchantOrders");
       }else{
-        navigation.navigate("SignInScreen")
+        navigation.navigate("MerchantMenu")
       }
     }
     else if(props.text == "Account"){

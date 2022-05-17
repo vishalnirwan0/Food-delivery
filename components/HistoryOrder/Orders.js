@@ -60,7 +60,7 @@ export default class Orders extends Component{
   };
   constructor(){
     super();
-    this.getOrder();
+    
     this.state = {
       restaurantName: {},
       items : {},
@@ -70,6 +70,7 @@ export default class Orders extends Component{
       id: {},
       modalVisible: false,
     };
+    this.getOrder();
     //console.log('ok');
     //console.log(this.state);
   };
