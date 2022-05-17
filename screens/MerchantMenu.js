@@ -189,9 +189,15 @@ const AddMenu = ({navigation}) => {
                         const docSnap= await getDoc(collectionRef)
                         const allMenuItems = [...menuItems];
                         console.log(">>>>>>. MmnuItems", allMenuItems);
-                        docSnap.data().menuItems.map((input, i) => (
+                        if(docSnap.data().menuItems){
+                            Object.keys(docSnap.data().menuItems).map((input, i) => (
                             allMenuItems.push(docSnap.data().menuItems[i])
-                        ))
+                            ))
+                        }else{
+                            docSnap.data().menuItems.map((input, i) => (
+                                allMenuItems.push(docSnap.data().menuItems[i])
+                            ))
+                        }
                             //console.log(">>>>>>. MmnuItems", allMenuItems);
                             //setMenuItems(allMenuItems);
                             //console.log(">>>>>>. MmnuItems", menuItems);
