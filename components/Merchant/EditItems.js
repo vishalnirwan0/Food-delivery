@@ -4,7 +4,7 @@ import { Divider } from "react-native-elements";
 import { collection, query, where, getDocs,updateDoc, deleteDoc, doc ,getDoc} from "firebase/firestore";
 import db from "../../firebase";
 import DeliveryPerson from "./DeliveryPerson";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
 import LottieView from "lottie-react-native";
 
 
@@ -69,7 +69,6 @@ export default class EditItems extends Component{
         <SafeAreaView style={{ flex: 10, backgroundColor: "white" }}>
         {/* green checkmark */}
         <View>
-          <Divider width={1} />
           <ScrollView>
           <View>
           <Text style={{  fontSize: 20 , marginBottom: 5 , textAlign:'center'}}> Edit Food Information </Text>
@@ -80,7 +79,7 @@ export default class EditItems extends Component{
                   marginBottom: 8
               }]}>Food description</Text>
               <View style={styles.action}>
-                  <FontAwesome 
+                  <FontAwesome5 
                       name="location-arrow"
                       color="#05375a"
                       size={10}
@@ -98,7 +97,7 @@ export default class EditItems extends Component{
                   marginBottom: 8
               }]}>Food Price</Text>
               <View style={styles.action}>
-                  <FontAwesome 
+                  <FontAwesome5 
                       name="location-arrow"
                       color="#05375a"
                       size={10}
@@ -122,9 +121,8 @@ export default class EditItems extends Component{
                   </TouchableOpacity>
               </View>
             </View>
-  
             <LottieView
-              style={{ height: 150, alignSelf: "center" }}
+              style={{ height: 400, alignSelf: "center" }}
               source={require("../../assets/animations/cooking.json")}
               // autoPlay
               speed={0.5}
@@ -168,6 +166,8 @@ const styles = StyleSheet.create({
     action: {
         flexDirection: 'row',
         marginTop: 8,
+        marginLeft: 5,
+        marginRight: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 10,
+        paddingLeft: 13,
         color: '#05375a',
     },
     button: {

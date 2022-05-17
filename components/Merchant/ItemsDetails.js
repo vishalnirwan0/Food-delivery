@@ -6,7 +6,6 @@ import db from "../../firebase";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import EditItems from "./EditItems"
 
-
 //const q = query(collection(db, "restuarants"));
 const styles = StyleSheet.create({
   timeStyle: {
@@ -27,12 +26,9 @@ const styles = StyleSheet.create({
   item: {
     width: '50%' // is 50% of container width
   },
-  button: {
-    alignItems: 'center',
-    marginTop: 10,
-    color: '#000000',
-    border: 'none',
-    padding: 15,
+button: {
+  alignItems: 'center',
+  marginTop: 30,
 },
 });
 var allMenuItems = [];
@@ -145,6 +141,7 @@ export default class ItemsDetails extends Component{
                  <Text style={{ fontWeight: "600", fontSize: 16 }}>  {this.state.menuItems[i].foodName}</Text>
                  <Text style={{ opacity: 0.7, fontSize: 16 }}>  {this.state.menuItems[i].foodDescription}</Text>
                  <Text style={{ opacity: 0.7, fontSize: 16 , color: 'blue'}}>  Price: £{this.state.menuItems[i].foodPrice}</Text>
+                 <View style={styles.button}>
                  <TouchableOpacity  onPress={() => { 
                 this.setState({modalVisible:true});
                 localStorage.setItem('merchantEditfoodName', this.state.menuItems[i].foodName);
@@ -153,13 +150,14 @@ export default class ItemsDetails extends Component{
                 localStorage.setItem('merchantEditItemdesc', this.state.menuItems[i].foodDescription); 
                 localStorage.setItem('merchantEditItemPrice', this.state.menuItems[i].foodPrice); 
                 localStorage.setItem('merchantEdititemID',i)} }>
-                  <Text style={styles.titleStyle} >Edit Item</Text>
+                  <Text>Edit Item</Text>
               </TouchableOpacity>
 
               <TouchableOpacity  onPress={() => { deleteItems(this.state.menuItems,i); } }>
-                  <Text style={styles.titleStyle} >Delete Item</Text>
+                  <Text >Delete Item</Text>
               </TouchableOpacity>
                  <Text> </Text>
+                 </View>
                  </View>
                  
              </View>
