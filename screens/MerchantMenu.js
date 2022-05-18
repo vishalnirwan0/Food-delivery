@@ -188,10 +188,13 @@ const AddMenu = ({navigation}) => {
                         const collectionRef = doc(db, "restuarants",localStorage.getItem('id'));
                         const docSnap= await getDoc(collectionRef)
                         const allMenuItems = [...menuItems];
-                        console.log(">>>>>>. MmnuItems", allMenuItems);
-                        docSnap.data().menuItems.map((input, i) => (
-                            allMenuItems.push(docSnap.data().menuItems[i])
-                        ))
+                        console.log(">>>>>>. MmnuItems", docSnap.data().menuItem);
+                        if(docSnap.data().menuItems){
+                            Object.keys(docSnap.data().menuItems).map((input, i) => (
+                                allMenuItems.push(docSnap.data().menuItems[i])
+                            ))
+                        }
+                        
                             //console.log(">>>>>>. MmnuItems", allMenuItems);
                             //setMenuItems(allMenuItems);
                             //console.log(">>>>>>. MmnuItems", menuItems);
