@@ -225,15 +225,6 @@ const AddMenu = ({navigation}) => {
                         const collectionRef = doc(db, "restuarants",localStorage.getItem('id'));
                         const docSnap= await getDoc(collectionRef)
                         const allMenuItems = [...menuItems];
-<<<<<<< HEAD
-                        console.log(">>>>>>. MmnuItems", docSnap.data().menuItem);
-                        if(docSnap.data().menuItems){
-                            Object.keys(docSnap.data().menuItems).map((input, i) => (
-                                allMenuItems.push(docSnap.data().menuItems[i])
-                            ))
-                        }
-                        
-=======
                         console.log(">>>>>>. MmnuItems", allMenuItems);
                         if(docSnap.data().menuItems){
                             Object.keys(docSnap.data().menuItems).map((input, i) => (
@@ -244,7 +235,6 @@ const AddMenu = ({navigation}) => {
                                 allMenuItems.push(docSnap.data().menuItems[i])
                             ))
                         }
->>>>>>> 5a15858e6222e169f77cde46239cba4453ccae81
                             //console.log(">>>>>>. MmnuItems", allMenuItems);
                             //setMenuItems(allMenuItems);
                             //console.log(">>>>>>. MmnuItems", menuItems);
