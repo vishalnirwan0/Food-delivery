@@ -17,12 +17,6 @@ import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopu
 import { collection, query, where, getDocs } from "firebase/firestore";
 import db from "../firebase";
 
-// import { useTheme } from 'react-native-paper';
-
-// import { AuthContext } from '../components/context';
-
-// import Users from '../model/users';
-//var querySnapshot
 const SignInScreen = ({ navigation }) => {
 
     const auth = getAuth();
@@ -33,13 +27,7 @@ const SignInScreen = ({ navigation }) => {
         password: '',
         check_textInputChange: false,
         secureTextEntry: true,
-        // isValidUser: true,
-        // isValidPassword: true,
     });
-
-    // const { colors } = useTheme();
-
-    // const { signIn } = React.useContext(AuthContext);
 
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
@@ -47,14 +35,12 @@ const SignInScreen = ({ navigation }) => {
                 ...data,
                 email: val,
                 check_textInputChange: true,
-                // isValidUser: true
             });
         } else {
             setData({
                 ...data,
                 email: val,
                 check_textInputChange: false,
-                // isValidUser: false
             });
         }
     }
@@ -81,7 +67,7 @@ const SignInScreen = ({ navigation }) => {
             secureTextEntry: !data.secureTextEntry
         });
     }
-// Sign in with account and put information into localstorage
+
     const handleSubmit =() => {
         signInWithEmailAndPassword(auth, data.email, data.password)
             .then(async(res) => {
@@ -89,12 +75,9 @@ const SignInScreen = ({ navigation }) => {
                  const q = query(collection(db, "userDetails"), where("email", "==", data.email));
                  localStorage.setItem('userData', res.user.email);
                  localStorage.setItem('userId', res.user.reloadUserInfo.localId)
-                 //console.log(q);
                  const querySnapshot = await getDocs(q);
                  console.log(querySnapshot);
                  querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    //console.log(doc.id, " => ", doc.data());
                     localStorage.setItem('address', doc.data().address);
                     localStorage.setItem('postcode', doc.data().postCode);
                     localStorage.setItem('name',doc.data().fullName);
@@ -108,11 +91,14 @@ const SignInScreen = ({ navigation }) => {
                 if(localStorage.getItem('role') == "Admin"){
                     window.location.reload();
                     navigation.navigate("Admin");
-                }else if (localStorage.getItem('role') == "customer"){
+                }
+                else if (localStorage.getItem('role') == "customer"){
                     navigation.navigate("Home");
                     window.location.reload();
+                } else if (localStorage.getItem('role') == "owner") {
+                    navigation.navigate("MerchantMenu");
+                    window.location.reload();
                 }
-                
 
             })
             .catch((err) => {
@@ -144,7 +130,6 @@ const SignInScreen = ({ navigation }) => {
         <Animatable.View 
             animation="fadeInUpBig"
             style={[styles.footer, {
-                // backgroundColor: colors.background
             }]}
         >
             <Text style={[styles.text_footer, {
@@ -153,18 +138,15 @@ const SignInScreen = ({ navigation }) => {
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
-                    // color={colors.text}
                     size={20}
                 />
                 <TextInput 
                     placeholder="Your Email"
                     placeholderTextColor="#666666"
                     style={[styles.textInput, {
-                        // color: colors.text
                     }]}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
-                    // onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -178,21 +160,13 @@ const SignInScreen = ({ navigation }) => {
                 </Animatable.View>
                 : null}
             </View>
-            {/* { data.isValidUser ? null : 
-            <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
-            </Animatable.View>
-            } */}
-            
 
             <Text style={[styles.text_footer, {
-                // color: colors.text,
                 marginTop: 35
             }]}>Password</Text>
             <View style={styles.action}>
                 <Feather 
                     name="lock"
-                    // color={colors.text}
                     size={20}
                 />
                 <TextInput 
@@ -200,7 +174,6 @@ const SignInScreen = ({ navigation }) => {
                     placeholderTextColor="#666666"
                     secureTextEntry={data.secureTextEntry ? true : false}
                     style={[styles.textInput, {
-                        // color: colors.text
                     }]}
                     autoCapitalize="none"
                     onChangeText={(val) => handlePasswordChange(val)}
@@ -223,11 +196,7 @@ const SignInScreen = ({ navigation }) => {
                     }
                 </TouchableOpacity>
             </View>
-            {/* { data.isValidPassword ? null : 
-            <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
-            </Animatable.View>
-            } */}
+          
             
 
             <TouchableOpacity onPress={() => handleGoogleSignIn()}>
@@ -237,7 +206,6 @@ const SignInScreen = ({ navigation }) => {
                 <TouchableOpacity
                     style={styles.signIn}
                     onPress={() => handleSubmit()}
-                    // onPress={() => {loginHandle( data.username, data.password )}}
                 >
                 <LinearGradient
                     colors={['#000000', '#000000']}
