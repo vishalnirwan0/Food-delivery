@@ -26,10 +26,14 @@ const styles = StyleSheet.create({
   item: {
     width: '50%' // is 50% of container width
   },
-button: {
-  alignItems: 'center',
-  marginTop: 30,
-},
+  button: {
+    alignItems: 'center',
+    margin: 5,
+    marginTop: 3,
+    width: 100, height: 30,
+    backgroundColor: '#4169E1', borderRadius: 20, padding:5,
+    Color:"white" ,
+    },
 });
 var allMenuItems = [];
 
@@ -144,6 +148,7 @@ export default class ItemsDetails extends Component{
                  <Text style={{ fontWeight: "600", fontSize: 16 }}>  {this.state.menuItems[i].foodName}</Text>
                  <Text style={{ opacity: 0.7, fontSize: 16 }}>  {this.state.menuItems[i].foodDescription}</Text>
                  <Text style={{ opacity: 0.7, fontSize: 16 , color: 'blue'}}>  Price: £{this.state.menuItems[i].foodPrice}</Text>
+                 <View style={{ flexDirection: "row",}}>
                  <View style={styles.button}>
                  <TouchableOpacity  onPress={() => { 
                 this.setState({modalVisible:true});
@@ -153,12 +158,14 @@ export default class ItemsDetails extends Component{
                 localStorage.setItem('merchantEditItemdesc', this.state.menuItems[i].foodDescription); 
                 localStorage.setItem('merchantEditItemPrice', this.state.menuItems[i].foodPrice); 
                 localStorage.setItem('merchantEdititemID',i)} }>
-                  <Text>Edit Item</Text>
+                  <Text style={{color:'white' }}>Edit Item</Text>
               </TouchableOpacity>
-
+              </View>
+              <View style={styles.button}>
               <TouchableOpacity  onPress={() => { deleteItems(this.state.menuItems,i); } }>
-                  <Text >Delete Item</Text>
+                  <Text style={{color:'white'}}>Delete Item</Text>
               </TouchableOpacity>
+              </View>
                  <Text> </Text>
                  </View>
                  </View>
