@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, SafeAreaView, ScrollView } from "react-native";
 import { Divider } from "react-native-elements";
+import db from "../firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import BottomTabs from "../components/home/BottomTabs";
 import Categories from "../components/home/Categories";
 import HeaderTabs from "../components/home/HeaderTabs";
@@ -15,51 +17,69 @@ const YELP_API_KEY =
 
 //const [userstutes, setuser] = useState(false);
 export default function Home({ navigation }) {
-    const [restaurantData, setRestaurantData] = useState(localRestaurants);
+
+      const [restaurantList, setRestaurantList] = useState([]);
+    // const [restaurantData, setRestaurantData] = useState(localRestaurants);
     const [city, setCity] = useState("southampton");
 
-    // const [activeTab, setActiveTab] = useState("Delivery");
 
 
-    const getRestaurantsFromYelp = () => {
-        const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}&limit=4`;
+    // const getRestaurantsFromYelp = () => {
+    //     const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}&limit=4`;
     
-        const apiOptions = {
-          headers: {
-            Authorization: `Bearer ${YELP_API_KEY}`,
-          },
-        };
+    //     const apiOptions = {
+    //       headers: {
+    //         Authorization: `Bearer ${YELP_API_KEY}`,
+    //       },
+    //     };
     
-        return fetch(yelpUrl, apiOptions)
-          .then((res) => res.json())
-          .then((json) =>
-            setRestaurantData(json.businesses
-            )
-          );
-      };
+    //     return fetch(yelpUrl, apiOptions)
+    //       .then((res) => res.json())
+    //       .then((json) =>
+    //         setRestaurantData(json.businesses
+    //         )
+    //       );
+    //   };
+    const getRestaurantList = async () => {
+      const colRef = collection(db, "restuarants");
+      // const result = query(colRef);
+      // const querySnapshot = await getDocs(result);
+      // console.log(">>>>>>>>> querySnapshot", querySnapshot);
+      //   querySnapshot.forEach((doc) => {
+      //     setRestaurantList((prev) => ([...prev, doc.data()]))
+      //   })
+        const q = query(collection(db, "restuarants"), where("restStatus", "==", true), where("restaurantPostCode", "==", localStorage.getItem("postcode")));
+      getDocs(q)
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            setRestaurantList((prev) => ([...prev, doc.data()]))
+          });
+        })
+    }
 
       useEffect(() => {
-        getRestaurantsFromYelp();
-      }, [city]);
+        getRestaurantList();
+      }, []);
 
 
     return(
-        <SafeAreaView style={{ backgroundColor: '#eee', flex: 1 }} >
-        <View style={{ backgroundColor: 'white', padding: 15 }} >
-        <BottomTabs navigation={navigation}/>
-        <Divider width={1} />
-        {localStorage.getItem("userData") ?(<LoginHeader navigation={navigation}/>):(<HeaderTabs navigation={navigation}/>)}
-            
+      <><>
+        {console.log(">>>>>>> restaurant list", restaurantList)}
+      </><SafeAreaView style={{ backgroundColor: '#eee', flex: 1 }}>
+          <View style={{ backgroundColor: 'white', padding: 15 }}>
+            <BottomTabs navigation={navigation} />
+            <Divider width={1} />
+            {localStorage.getItem("userData") ? (<LoginHeader navigation={navigation} />) : (<HeaderTabs navigation={navigation} />)}
+
             <SearchBar cityHandler={setCity} />
-        </View>
-        <Categories />
-        <ScrollView showsVerticalScrollIndicator={false} horizontal={true} style={{alignSelf: 'center'}}>
-        <RestaurantItems
-        restaurantData={restaurantData}
-        navigation={navigation}
-        />
-        </ScrollView>
-        {/* <Maps/> */}
-        </SafeAreaView>
+          </View>
+          <Categories />
+          <ScrollView showsVerticalScrollIndicator={false} horizontal={true} style={{ alignSelf: 'center' }}>
+            <RestaurantItems
+              restaurantData={restaurantList}
+              navigation={navigation} />
+          </ScrollView>
+          {/* <Maps/> */}
+        </SafeAreaView></>
     )
 }

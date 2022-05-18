@@ -14,7 +14,7 @@ export default function MerchantBottomTabs({ navigation }) {
     >
       <Icon icon="home" text="Home" navigation={navigation}/>
       <Icon icon="photo-video" text="Manage restuant's blackground" navigation={navigation}/>
-      <Icon icon="clipboard-list" text="Manage food items" navigation={navigation}/>
+      <Icon icon="clipboard-list" text="Add food items" navigation={navigation}/>
       <Icon icon="receipt" text="Manage orders" navigation={navigation}/>
       {/* <Icon icon="user" text="Account" navigation={navigation}/> */}
       {localStorage.getItem("userData") ?(<Icon icon="sign-out-alt" text="Log out" navigation={navigation}/>):(<></>)}
@@ -30,7 +30,7 @@ const Icon = ({ navigation,...props}) => (
       navigation.navigate("Home");
       window.location.reload();
     }
-    else if(props.text == "Manage food items"){
+    else if(props.text == "Add food items"){
       navigation.navigate("MerchantMenu");
     }
     else if(props.text == "Home"){

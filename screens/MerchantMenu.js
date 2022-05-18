@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     View, 
     Text, 
@@ -7,17 +7,19 @@ import {
     Platform,
     StyleSheet,
     ScrollView,
-    StatusBar
+    StatusBar,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import db, { storage } from "../firebase";
+
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { collection, addDoc,updateDoc ,doc,getDoc} from "firebase/firestore"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import MerchantBottomTabs from "../components/home/MerchantBottomTabs";
 
-import db from "../firebase";
 
 
 const AddMenu = ({navigation}) => {
@@ -33,6 +35,7 @@ const AddMenu = ({navigation}) => {
         secureTextEntry: true,
         confirm_secureTextEntry: true,
         admin_authorization: false,
+        img: "",
         owner_id : localStorage.getItem('userId'),
     });
     const [ menuItems, setMenuItems ] = useState([
@@ -44,6 +47,43 @@ const AddMenu = ({navigation}) => {
             foodImage: '',
         }
     ]);
+    const [file, setFile] = useState(null);
+    const [progress, setProgress] = useState(null);
+
+    useEffect(() => {
+        const uploadFile = () => {
+            const name = new Date().getTime() + file.name;
+            const storageRef = ref(storage, name);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on("state_changed", (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setProgress(progress);
+                switch(snapshot.state) {
+                    case "paused":
+                    console.log(">>>>> Upload is paused");
+                    break;
+                    case "running":
+                    console.log(">>>>> Upload is running");
+                    break;
+                    default:
+                    break;
+                }
+            }, (error) => {
+                console.log(error);
+            },
+            () => {
+                console.log(">>>>>>>>> coming here")
+            getDownloadURL(uploadTask.snapshot.ref)
+                    .then((downloadURL) => {
+                        console.log(">>>>>>>. download URl", downloadURL)
+                        setData((prev) => ({ ...prev, img: downloadURL}));
+                    })
+            }
+        );
+    };
+    file && uploadFile();
+    }, [file])
 
     const restaurantNameInputChange = (val) => {
         if( val.length !== 0 ) {
@@ -163,10 +203,7 @@ const AddMenu = ({navigation}) => {
     /////
 
     const handleSubmit = () => {
-        console.log(">>>>>>> coming here");
-                console.log(">>>>>>>. data", data);
                 const updatedData = data;
-                console.log(">>>>>>. MmnuItems", menuItems);
                 const collectionRef = collection(db, "restuarants");
                     addDoc(collectionRef, data)
                     .then((res) => {
@@ -188,6 +225,7 @@ const AddMenu = ({navigation}) => {
                         const collectionRef = doc(db, "restuarants",localStorage.getItem('id'));
                         const docSnap= await getDoc(collectionRef)
                         const allMenuItems = [...menuItems];
+<<<<<<< HEAD
                         console.log(">>>>>>. MmnuItems", docSnap.data().menuItem);
                         if(docSnap.data().menuItems){
                             Object.keys(docSnap.data().menuItems).map((input, i) => (
@@ -195,6 +233,18 @@ const AddMenu = ({navigation}) => {
                             ))
                         }
                         
+=======
+                        console.log(">>>>>>. MmnuItems", allMenuItems);
+                        if(docSnap.data().menuItems){
+                            Object.keys(docSnap.data().menuItems).map((input, i) => (
+                            allMenuItems.push(docSnap.data().menuItems[i])
+                            ))
+                        }else{
+                            docSnap.data().menuItems.map((input, i) => (
+                                allMenuItems.push(docSnap.data().menuItems[i])
+                            ))
+                        }
+>>>>>>> 5a15858e6222e169f77cde46239cba4453ccae81
                             //console.log(">>>>>>. MmnuItems", allMenuItems);
                             //setMenuItems(allMenuItems);
                             //console.log(">>>>>>. MmnuItems", menuItems);
@@ -574,6 +624,19 @@ const AddMenu = ({navigation}) => {
                 </Animatable.View>
                  : null}
             </View>
+
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Upload Restaurant Photo</Text>
+
+            <form>
+                <input 
+                 label="Upload"
+                 type="file"
+                 onChange={(e) => setFile(e.target.files[0])}
+                />
+            </form>
+                    
             <View style={styles.textPrivate}>
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
                 <Text style={styles.color_textPrivate}>{" "}and</Text>
@@ -596,9 +659,6 @@ const AddMenu = ({navigation}) => {
             </View>
                 </>
                 )}
-           
-            
-        
             </ScrollView>
         </Animatable.View>
       </View>

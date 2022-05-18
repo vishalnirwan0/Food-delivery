@@ -25,7 +25,6 @@ export default function MenuItems({
   marginLeft,
 }) {
 
-  console.log(">>>>>. foods", foods)
   const dispatch = useDispatch();
 
   const selectItem = (item, checkboxValue) =>

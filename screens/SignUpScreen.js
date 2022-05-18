@@ -15,7 +15,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { collection, addDoc } from "firebase/firestore"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 import db from "../firebase";
 
@@ -141,12 +141,16 @@ const SignUpScreen = ({navigation}) => {
         });
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log(">>>>>>> coming here");
         createUserWithEmailAndPassword(auth, data.email, data.password)
             .then((res) => {
                 console.log("response user>>>>>>>", res.user);
                 console.log(">>>>>>>. data", data);
+                sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        alert("email sent");
+                    })
                 const collectionRef = collection(db, "userDetails");
                     addDoc(collectionRef, data)
                     .then(() => {
@@ -154,7 +158,7 @@ const SignUpScreen = ({navigation}) => {
                     })
                 navigation.navigate("SignInScreen");
             })
-            .catch((err) => {
+             .catch((err) => {
                 alert(err.message)
             })
     }
