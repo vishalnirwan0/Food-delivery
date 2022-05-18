@@ -54,16 +54,19 @@ const deleteItems = async(allMenuItems,id) =>{
 export default class ItemsDetails extends Component{
 
   getOrder= async () => {
-    const docRef = doc(db, "restuarants",localStorage.getItem('id'));
-    var newres = [];
-    var newitems= [];
-    var newid =[];
-    const docSnap = await getDoc(docRef);
-    this.setState({
-      restaurantName:docSnap.data().restaurantName,
-      menuItems:docSnap.data().menuItems,
-      id: localStorage.getItem('id'),
-    })
+    if(localStorage.getItem('id')){
+      const docRef = doc(db, "restuarants",localStorage.getItem('id'));
+      var newres = [];
+      var newitems= [];
+      var newid =[];
+      const docSnap = await getDoc(docRef);
+      this.setState({
+        restaurantName:docSnap.data().restaurantName,
+        menuItems:docSnap.data().menuItems,
+        id: localStorage.getItem('id'),
+      })
+    }
+    
    
   };
   constructor(){
