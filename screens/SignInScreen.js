@@ -95,8 +95,19 @@ const SignInScreen = ({ navigation }) => {
                 else if (localStorage.getItem('role') == "customer"){
                     navigation.navigate("Home");
                     window.location.reload();
-                } else if (localStorage.getItem('role') == "owner") {
-                    navigation.navigate("MerchantMenu");
+                }else if (localStorage.getItem('role') == "owner"){
+                    const q1 = query(collection(db, "restuarants"), where("owner_id", "==", res.user.reloadUserInfo.localId));
+                    const querySnapshot1 = await getDocs(q1);
+                    querySnapshot1.forEach((doc) => {
+                        //console.log(doc.id, " => ", doc.data());
+                        if(doc.data().restaurantName != null){
+                            localStorage.setItem('res', doc.data().restaurantName);
+                            localStorage.setItem('address',doc.data().restaurantAddress);
+                            localStorage.setItem('postcode',doc.data().restaurantPostCode);
+                            localStorage.setItem('id',doc.id);
+                        }
+                      });
+                    navigation.navigate("MerchantHome");
                     window.location.reload();
                 }
 

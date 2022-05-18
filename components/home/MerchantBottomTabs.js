@@ -14,15 +14,43 @@ export default function MerchantBottomTabs({ navigation }) {
     >
       <Icon icon="home" text="Home" navigation={navigation}/>
       <Icon icon="photo-video" text="Manage restuant's blackground" navigation={navigation}/>
-      <Icon icon="clipboard-list" text="Manage food items" navigation={navigation}/>
-      <Icon icon="user" text="Account" navigation={navigation}/>
+      <Icon icon="clipboard-list" text="Add food items" navigation={navigation}/>
+      <Icon icon="receipt" text="Manage orders" navigation={navigation}/>
+      {/* <Icon icon="user" text="Account" navigation={navigation}/> */}
       {localStorage.getItem("userData") ?(<Icon icon="sign-out-alt" text="Log out" navigation={navigation}/>):(<></>)}
     </View>
   );
 }
 
 const Icon = ({ navigation,...props}) => (
-  <TouchableOpacity>
+  <TouchableOpacity onPress={() =>{
+    if(props.text == "Log out"){
+      localStorage.clear();
+      sessionStorage.clear();
+      navigation.navigate("Home");
+      window.location.reload();
+    }
+    else if(props.text == "Add food items"){
+      navigation.navigate("MerchantMenu");
+    }
+    else if(props.text == "Home"){
+      navigation.navigate("MerchantHome");
+    }
+    else if(props.text == "Manage orders"){
+      if(localStorage.getItem('res')){
+        navigation.navigate("MerchantOrders");
+      }else{
+        navigation.navigate("MerchantMenu")
+      }
+    }
+    else if(props.text == "Account"){
+      if(localStorage.getItem('userData')){
+        navigation.navigate("Account");
+      }else{
+        navigation.navigate("SignInScreen")
+      }
+    }
+  }}>
     <View>
       <FontAwesome5
         name={props.icon}
@@ -31,34 +59,7 @@ const Icon = ({ navigation,...props}) => (
           marginBottom: 3,
           alignSelf: "center",
         }}
-        onPress={() =>{
-          if(props.text == "Log out"){
-            localStorage.clear();
-            sessionStorage.clear();
-            navigation.navigate("Home");
-            window.location.reload();
-          }
-          else if(props.text == "Manage food items"){
-            navigation.navigate("MerchantMenu");
-          }
-          else if(props.text == "Home"){
-            navigation.navigate("MerchantHome");
-          }
-          else if(props.text == "Orders"){
-            if(localStorage.getItem('userData')){
-              navigation.navigate("HistoryOrder");
-            }else{
-              navigation.navigate("SignInScreen")
-            }
-          }
-          else if(props.text == "Account"){
-            if(localStorage.getItem('userData')){
-              navigation.navigate("Account");
-            }else{
-              navigation.navigate("SignInScreen")
-            }
-          }
-        }}
+        
       />
       <Text>{props.text}</Text>
     </View>

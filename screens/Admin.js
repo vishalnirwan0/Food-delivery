@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     row: {  flexDirection: 'row', height: 40, },
     headtext: { textAlign: 'center' ,color: 'white'},
     text: { textAlign: 'center' ,color: 'black'},
-    gbtn: { alignItems: "center" ,width: 60, height: 30, marginLeft: 10, backgroundColor: '#228B22', borderRadius: 20 },
-    rbtn: { alignItems: "center" ,width: 60, height: 30, marginLeft: 10, backgroundColor: '#B22222', borderRadius: 20 },
+    gbtn: { alignItems: "center" ,width: 60, height: 30, marginLeft: 10, backgroundColor: '#228B22', borderRadius: 20,padding: 5 },
+    rbtn: { alignItems: "center" ,width: 60, height: 30, marginLeft: 10, backgroundColor: '#B22222', borderRadius: 20,padding: 5 },
   });
  

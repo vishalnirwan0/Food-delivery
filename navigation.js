@@ -14,6 +14,7 @@ import HistoryOrder from "./screens/HistoryOrder";
 import Admin from "./screens/Admin";
 import MerchantMenu from "./screens/MerchantMenu";
 import MerchantHome from "./screens/MerchantHome";
+import MerchantOrders from "./screens/MerchantOrders";
 
 
 const store = configureStore();
@@ -51,6 +52,7 @@ export default function RootNavigation() {
               <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
               <Stack.Screen name="MerchantMenu" component={MerchantMenu} />
               <Stack.Screen name="MerchantHome" component={MerchantHome} />
+              <Stack.Screen name="MerchantOrders" component={MerchantOrders} />
               </>
               ):(<></>)}
               </>

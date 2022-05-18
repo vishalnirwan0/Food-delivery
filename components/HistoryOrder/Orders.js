@@ -23,31 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 var querySnapshot;
-const getOrder= async () => {
-  var newres = [];
-  var newtime=[];
-  var newitems= [];
-  var newprice =[];
-  var newstatus =[];
-  var newid =[];
-  querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-  //doc.data() is never undefined for query doc snapshots
-  //console.log(doc.data());
-  newres.push({'res' : doc.data().restaurantName});
-  newitems.push({'items': doc.data().items});
-  newtime.push({'time': doc.data().createdAt.toDate().toLocaleString()});
-  newprice.push({'total': doc.data().total});
-  newstatus.push({'status': doc.data().status});
-  newid.push({'id': doc.id});
- });
- sessionStorage.setItem('resName',JSON.stringify(newres));
- sessionStorage.setItem('items',JSON.stringify(newitems));
- sessionStorage.setItem('time', JSON.stringify(newtime));
- sessionStorage.setItem('total', JSON.stringify(newprice));
- sessionStorage.setItem('status', JSON.stringify(newstatus));
- sessionStorage.setItem('id' ,JSON.stringify(newid) );
-};
+
 
 export default class Orders extends Component{
   //const [restaurants,setRes] = useState([]);
@@ -55,32 +31,52 @@ export default class Orders extends Component{
   //   localStorage.setItem('currentOrder', this.state.id[i].id);
   //   navigation.navigate('HistoryOrderDetails');
   // }
+  getOrder= async () => {
+    var newres = [];
+    var newtime=[];
+    var newitems= [];
+    var newprice =[];
+    var newstatus =[];
+    var newid =[];
+    querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+    //doc.data() is never undefined for query doc snapshots
+    //console.log(doc.data());
+    newres.push({'res' : doc.data().restaurantName});
+    newitems.push({'items': doc.data().items});
+    newtime.push({'time': doc.data().createdAt.toDate().toLocaleString()});
+    newprice.push({'total': doc.data().total});
+    newstatus.push({'status': doc.data().status});
+    newid.push({'id': doc.id});
+   });
+   this.setState({
+    restaurantName: newres,
+    items : newitems,
+    time : newtime,
+    total: newprice,
+    status: newstatus,
+    id: newid,
+});
+  };
   constructor(){
     super();
-    getOrder();
+    
     this.state = {
-      restaurantName: JSON.parse(sessionStorage.getItem('resName')),
-      items : JSON.parse(sessionStorage.getItem('items')),
-      time : JSON.parse(sessionStorage.getItem('time')),
-      total: JSON.parse(sessionStorage.getItem('total')),
-      status: JSON.parse(sessionStorage.getItem('status')),
-      id: JSON.parse(sessionStorage.getItem('id')),
+      restaurantName: {},
+      items : {},
+      time : {},
+      total: {},
+      status: {},
+      id: {},
       modalVisible: false,
     };
+    this.getOrder();
     //console.log('ok');
     //console.log(this.state);
   };
   componentDidMount(){
     setTimeout(()=>{
-      getOrder();
-      this.setState({
-        restaurantName: JSON.parse(sessionStorage.getItem('resName')),
-        items : JSON.parse(sessionStorage.getItem('items')),
-        time : JSON.parse(sessionStorage.getItem('time')),
-        total: JSON.parse(sessionStorage.getItem('total')),
-        status: JSON.parse(sessionStorage.getItem('status')),
-        id: JSON.parse(sessionStorage.getItem('id')),
-    });
+      this.getOrder();
       console.log(this.state);
     },1000)
   }
@@ -119,7 +115,7 @@ export default class Orders extends Component{
       </Modal>
       </View>
       <View>
-          {this.state.restaurantName &&  this.state.restaurantName.map((v,i) => {
+          {this.state.restaurantName &&  Object.keys(this.state.restaurantName).map((v,i) => {
              return (
               <View key={i}>
                 <TouchableOpacity  onPress={() => {
@@ -133,7 +129,7 @@ export default class Orders extends Component{
                       height: 50,
                       borderRadius: 8,
                     }}/>
-             <Text style={styles.titleStyle} >{v.res}</Text>
+             <Text style={styles.titleStyle} >{this.state.restaurantName[i].res}</Text>
              </View>
              <View style={{flexDirection:'row' }}>
              <ScrollView horizontal={true} > 
