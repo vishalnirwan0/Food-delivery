@@ -30,6 +30,7 @@ export default function RootNavigation() {
     <ReduxProvider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+          
           {localStorage.getItem("userData") ?(
           <>
             {(localStorage.getItem("role")=="Admin")? (<Stack.Screen name="Admin" component={Admin}/>):(

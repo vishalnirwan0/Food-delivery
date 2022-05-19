@@ -46,7 +46,7 @@ export default function MenuItems({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {foods && foods.map((food, index) => (
+      {foods && Object.keys(foods).map((food, index) => (
         <View key={index}>
           <View style={styles.menuItemStyle}>
             {hideCheckbox ? (
@@ -55,12 +55,12 @@ export default function MenuItems({
               <BouncyCheckbox
                 iconStyle={{ borderColor: "lightgray", borderRadius: 0 }}
                 fillColor="green"
-                isChecked={isFoodInCart(food, cartItems)}
-                onPress={(checkboxValue) => selectItem(food, checkboxValue)}
+                isChecked={isFoodInCart(food[index], cartItems)}
+                onPress={(checkboxValue) => selectItem(foods[index], checkboxValue)}
               />
             )}
-            <FoodInfo foods={food} />
-            <FoodImage food={food} marginLeft={marginLeft ? marginLeft : 0} />
+            <FoodInfo foods={foods[index]} />
+            <FoodImage food={foods[index]} marginLeft={marginLeft ? marginLeft : 0} />
           </View>
           <Divider
             width={0.5}

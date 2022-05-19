@@ -109,7 +109,7 @@ const SignInScreen = ({ navigation }) => {
                         }
                       });
                     navigation.navigate("MerchantHome");
-                    // window.location.reload();
+                    window.location.reload();
                 }
 
             })
