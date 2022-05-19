@@ -101,14 +101,15 @@ const SignInScreen = ({ navigation }) => {
                     querySnapshot1.forEach((doc) => {
                         //console.log(doc.id, " => ", doc.data());
                         if(doc.data().restaurantName != null){
+                            // console.log(">>>>>>> retaurantName", restaurantName)
                             localStorage.setItem('res', doc.data().restaurantName);
                             localStorage.setItem('address',doc.data().restaurantAddress);
                             localStorage.setItem('postcode',doc.data().restaurantPostCode);
-                            localStorage.setItem('id',doc.id);
+                            localStorage.setItem('id', doc.id);
                         }
                       });
                     navigation.navigate("MerchantHome");
-                    window.location.reload();
+                    // window.location.reload();
                 }
 
             })

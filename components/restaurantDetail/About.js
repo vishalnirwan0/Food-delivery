@@ -2,14 +2,14 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 
 export default function About(props) {
-  const { name, image, price, reviews, rating, categories } =
+  const { name, image, price, description} =
     props.route.params;
 
-  const formattedCategories = categories.map((cat) => cat.title).join(" • ");
+  // const formattedCategories = categories.map((cat) => cat.title).join(" • ");
 
-  const description = `${formattedCategories} ${
-    price ? " • " + price : ""
-  } • 🎫 • ${rating} ⭐ (${reviews}+)`;
+  // const description = `${formattedCategories} ${
+  //   price ? " • " + price : ""
+  // } • 🎫 • ${rating} ⭐ (${reviews}+)`;
   return (
     <View>
       <RestaurantImage image={image} />

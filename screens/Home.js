@@ -48,7 +48,7 @@ export default function Home({ navigation }) {
       //   querySnapshot.forEach((doc) => {
       //     setRestaurantList((prev) => ([...prev, doc.data()]))
       //   })
-        const q = query(collection(db, "restuarants"), where("restStatus", "==", true), where("restaurantPostCode", "==", localStorage.getItem("postcode")));
+        const q = query(colRef, where("restStatus", "==", true), where("restaurantPostCode", "==", localStorage.getItem("postcode")));
       getDocs(q)
         .then((snapshot) => {
           snapshot.forEach((doc) => {
@@ -71,7 +71,7 @@ export default function Home({ navigation }) {
             <Divider width={1} />
             {localStorage.getItem("userData") ? (<LoginHeader navigation={navigation} />) : (<HeaderTabs navigation={navigation} />)}
 
-            <SearchBar cityHandler={setCity} />
+            {/* <SearchBar cityHandler={setCity} /> */}
           </View>
           <Categories />
           <ScrollView showsVerticalScrollIndicator={false} horizontal={true} style={{ alignSelf: 'center' }}>

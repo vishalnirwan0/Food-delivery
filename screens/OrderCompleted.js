@@ -23,12 +23,12 @@ export default function OrderCompleted({navigation}) {
   );
 
   const total = items
-    .map((item) => Number(item.price.replace("$", "")))
+    .map((item) => Number(item.foodPrice.replace("£", "")))
     .reduce((prev, curr) => prev + curr, 0);
 
-  const totalUSD = total.toLocaleString("en", {
+  const totalGBP = total.toLocaleString("en", {
     style: "currency",
-    currency: "USD",
+    currency: "GBP",
   });
 
   useEffect(() => {
@@ -52,9 +52,6 @@ export default function OrderCompleted({navigation}) {
               (snapshot) => {
         snapshot.docs.map((doc) => setLastOrder(doc.data()));
               })
-
-              console.log(">>>>>>> ubsubscribe", unsubscribe);
-              console.log(lastOrder);
     return () => unsubscribe();
   }, []);
 

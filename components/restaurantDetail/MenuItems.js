@@ -42,7 +42,7 @@ export default function MenuItems({
   );
 
   const isFoodInCart = (food, cartItems) =>
-    Boolean(cartItems.find((item) => item.title === food.title));
+    Boolean(cartItems.find((item) => item.title === food.foodName));
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -59,7 +59,7 @@ export default function MenuItems({
                 onPress={(checkboxValue) => selectItem(food, checkboxValue)}
               />
             )}
-            <FoodInfo food={food} />
+            <FoodInfo foods={food} />
             <FoodImage food={food} marginLeft={marginLeft ? marginLeft : 0} />
           </View>
           <Divider
@@ -75,16 +75,16 @@ export default function MenuItems({
 
 const FoodInfo = (props) => (
   <View style={{ width: 240, justifyContent: "space-evenly" }}>
-    <Text style={styles.titleStyle}>{props.food.title}</Text>
-    <Text>{props.food.description}</Text>
-    <Text>{props.food.price}</Text>
+    <Text style={styles.titleStyle}>{props.foods.foodName}</Text>
+    <Text>{props.foods.foodDescription}</Text>
+    <Text>{props.foods.foodPrice}</Text>
   </View>
 );
 
 const FoodImage = ({ marginLeft, ...props }) => (
   <View>
     <Image
-      source={{ uri: props.food.image }}
+      source={{ uri: props.foodImage }}
       style={{
         width: 100,
         height: 100,

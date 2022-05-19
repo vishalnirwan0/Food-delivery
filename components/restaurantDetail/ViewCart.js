@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import OrderItem from "./OrderItem";
 import db from "../../firebase";
-// import LottieView from "lottie-react-native";
 
 export default function ViewCart({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,13 +13,15 @@ export default function ViewCart({ navigation }) {
     (state) => state.cartReducer.selectedItems
   );
 
+  console.log(">>>>>>>> items in view cart", items)
+
   const total = items
-    .map((item) => Number(item.price.replace("$", "")))
+    .map((item) => Number(item.foodPrice.replace("£", "")))
     .reduce((prev, curr) => prev + curr, 0);
 
-  const totalUSD = total.toLocaleString("en", {
+  const totalGBP = total.toLocaleString("en", {
     style: "currency",
-    currency: "USD",
+    currency: "GBP",
   });
 
   const addOrderToFireBase = async() => {
@@ -33,7 +34,7 @@ export default function ViewCart({ navigation }) {
         restaurantName: restaurantName,
         userid : localStorage.getItem('userId'),
         createdAt: serverTimestamp(),
-        total: totalUSD,
+        total: totalGBP,
         status: 'created',
         customerName: localStorage.getItem('name'),
         customeraddress: localStorage.getItem('address'),
@@ -102,7 +103,7 @@ export default function ViewCart({ navigation }) {
             ))}
             <View style={styles.subtotalContainer}>
               <Text style={styles.subtotalText}>Subtotal</Text>
-              <Text>{totalUSD}</Text>
+              <Text>{totalGBP}</Text>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <TouchableOpacity
@@ -130,7 +131,7 @@ export default function ViewCart({ navigation }) {
                     top: 17,
                   }}
                 >
-                  {total ? totalUSD : ""}
+                  {total ? totalGBP : ""}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -186,35 +187,13 @@ export default function ViewCart({ navigation }) {
               <Text style={{ color: "white", fontSize: 20, marginRight: 30 }}>
                 View Cart
               </Text>
-              <Text style={{ color: "white", fontSize: 20 }}>{totalUSD}</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>{totalGBP}</Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
         <></>
       )}
-      {/* {loading ? (
-        <View
-          style={{
-            backgroundColor: "black",
-            position: "absolute",
-            opacity: 0.6,
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-          }}
-        >
-          <LottieView
-            style={{ height: 200 }}
-            source={require("../../assets/animations/scanner.json")}
-            autoPlay
-            speed={3}
-          />
-        </View>
-      ) : (
-        <></>
-      )} */}
     </>
   );
 }

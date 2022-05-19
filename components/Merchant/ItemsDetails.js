@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import { View, Text, SafeAreaView, Modal, ScrollView, StyleSheet, Image,TouchableOpacity} from "react-native";
 import { Button, Divider } from "react-native-elements";
-import { collection, query, where, getDoc,doc , deleteDoc,updateDoc } from "firebase/firestore";
+import { collection, query, where, getDoc, doc , deleteDoc, updateDoc } from "firebase/firestore";
 import db from "../../firebase";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import EditItems from "./EditItems"
@@ -54,14 +54,14 @@ const deleteItems = async(allMenuItems,id) =>{
 export default class ItemsDetails extends Component{
 
   getOrder= async () => {
-    const docRef = doc(db, "restuarants",localStorage.getItem('id'));
+    const docRef = doc(db, "restuarants", localStorage.getItem('id'));
     var newres = [];
     var newitems= [];
     var newid =[];
     const docSnap = await getDoc(docRef);
     this.setState({
-      restaurantName:docSnap.data().restaurantName,
-      menuItems:docSnap.data().menuItems,
+      restaurantName: docSnap.data().restaurantName,
+      menuItems: docSnap.data().menuItems,
       id: localStorage.getItem('id'),
     })
    
@@ -75,7 +75,7 @@ export default class ItemsDetails extends Component{
       modalVisible: false,
       id: {},
     };
-    console.log("ok",this.state);
+    console.log("ok", this.state);
     //console.log("ok",this.state.menuItems[0].menuItems[0].foodName);
   };
   componentDidMount(){
