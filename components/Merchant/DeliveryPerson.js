@@ -85,6 +85,7 @@ export default class DeliveryPerson extends Component{
         await updateDoc(updateRes1, {
             deliveryname: name,
             deliveryid: id,
+            restaurantid: localStorage.getItem('id'),
             status: 'delivery',
           });
         this.getDeliveryPerson();

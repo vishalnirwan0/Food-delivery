@@ -14,7 +14,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import db, { storage } from "../firebase";
-
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { collection, addDoc,updateDoc ,doc,getDoc} from "firebase/firestore"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -270,8 +269,8 @@ const AddMenu = ({navigation}) => {
             animation="fadeInUpBig"
             style={styles.footer}
         >
-            <ScrollView>
                 {localStorage.getItem('res')?(
+                    // having the restuarants 
                 <>
                  <Text style={styles.text_footer}>Reataurant Name</Text>
             <View style={styles.action}>
@@ -284,16 +283,36 @@ const AddMenu = ({navigation}) => {
             <View style={styles.action}>
             <Text style={styles.text_footer}>{localStorage.getItem('userData')}</Text>
             </View>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Reataurant Address</Text>
+            <View style={styles.action}>
+            <Text style={styles.text_footer}>{localStorage.getItem('address')}</Text>
+            </View>
+
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Reataurant Post Code</Text>
+            <View style={styles.action}>
+            <Text style={styles.text_footer}>{localStorage.getItem('postcode')}</Text>
+            </View>
+            <View style={styles.textPrivate}>
+                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
+                <Text style={styles.color_textPrivate}>{" "}and</Text>
+                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Privacy policy</Text>
+            </View>
+
             {menuItems.map((input, key) => (
+                                // Item part
                 <View key={(key+1)} style={styles.AddItemCol}>
                 <View style={{ alignSelf: 'center', padding: 12}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10,
-            }]}>Food Item Name</Text>
+            }]}>Food Name</Text>
             </View>
             <View style={styles.action}>
                 <FontAwesome 
-                    name="user-o"
+                    name="pencil"
                     color="#05375a"
                     size={20}
                 />
@@ -308,11 +327,11 @@ const AddMenu = ({navigation}) => {
             <View style={{ alignSelf: 'center', padding: 12}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10
-            }]}>Food Item Description</Text>
+            }]}>Food Description</Text>
             </View>
             <View style={styles.action}>
                 <FontAwesome 
-                    name="user-o"
+                    name="list"
                     color="#05375a"
                     size={20}
                 />
@@ -326,11 +345,11 @@ const AddMenu = ({navigation}) => {
             <View style={{ alignSelf: 'center', padding: 12}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10
-            }]}>Food Item Image</Text>
+            }]}>Food Image</Text>
             </View>
             <View style={styles.action}>
                 <FontAwesome 
-                    name="user-o"
+                    name="image"
                     color="#05375a"
                     size={20}
                 />
@@ -344,11 +363,11 @@ const AddMenu = ({navigation}) => {
             <View style={{ alignSelf: 'center', padding: 12}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10
-            }]}>Food Item Price</Text>
+            }]}>Food Price</Text>
             </View>
             <View style={styles.action}>
                 <FontAwesome 
-                    name="user-o"
+                    name="tag"
                     color="#05375a"
                     size={20}
                 />
@@ -376,25 +395,6 @@ const AddMenu = ({navigation}) => {
                 </LinearGradient>
                 </TouchableOpacity>
             </View>
-
-            <Text style={[styles.text_footer, {
-                marginTop: 10
-            }]}>Reataurant Address</Text>
-            <View style={styles.action}>
-            <Text style={styles.text_footer}>{localStorage.getItem('address')}</Text>
-            </View>
-
-            <Text style={[styles.text_footer, {
-                marginTop: 10
-            }]}>Reataurant Post Code</Text>
-            <View style={styles.action}>
-            <Text style={styles.text_footer}>{localStorage.getItem('postcode')}</Text>
-            </View>
-            <View style={styles.textPrivate}>
-                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
-                <Text style={styles.color_textPrivate}>{" "}and</Text>
-                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Privacy policy</Text>
-            </View>
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
@@ -412,11 +412,12 @@ const AddMenu = ({navigation}) => {
             </View>
                 </>
                 ):(
+                // another condition with no restuarant in the account 
                 <>
                  <Text style={styles.text_footer}>Reataurant Name</Text>
             <View style={styles.action}>
                 <FontAwesome 
-                    name="user-o"
+                    name="location-arrow"
                     color="#05375a"
                     size={20}
                 />
@@ -438,7 +439,6 @@ const AddMenu = ({navigation}) => {
                 </Animatable.View>
                  : null}
             </View>
-
             <Text style={[styles.text_footer, {
                 marginTop: 10
             }]}>Reataurant Email</Text>
@@ -465,98 +465,6 @@ const AddMenu = ({navigation}) => {
                     />
                 </Animatable.View>
                  : null}
-            </View>
-            {menuItems.map((input, key) => (
-                <View key={(key+1)} style={styles.AddItemCol}>
-                <View style={{ alignSelf: 'center', padding: 12}}>
-            <Text style={[styles.text_footer, {
-                marginTop: 10,
-            }]}>Food Item Name</Text>
-            </View>
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput 
-                    placeholder="Name of the Food"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => itemnameInputChange(val,key)}
-                />
-            </View>
-
-            <View style={{ alignSelf: 'center', padding: 12}}>
-            <Text style={[styles.text_footer, {
-                marginTop: 10
-            }]}>Food Item Description</Text>
-            </View>
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput 
-                    placeholder="Description of the Food"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => itemdescriptionInputChange(val,key)}
-                />
-            </View>
-            <View style={{ alignSelf: 'center', padding: 12}}>
-            <Text style={[styles.text_footer, {
-                marginTop: 10
-            }]}>Food Item Image</Text>
-            </View>
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput 
-                    placeholder="Image of the Food"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => itemimageInputChange(val,key)}
-                />
-            </View>
-            <View style={{ alignSelf: 'center', padding: 12}}>
-            <Text style={[styles.text_footer, {
-                marginTop: 10
-            }]}>Food Item Price</Text>
-            </View>
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput 
-                    placeholder="Price of the Food"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => itempriceInputChange(val,key)}
-                />
-            </View>
-            </View>
-            ))}
-            <View style={styles.buttonAddItems}>
-            <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={() => handleAddMoreMenuItems()}
-                >
-                <LinearGradient
-                    colors={['#000000', '#000000']}
-                    style={styles.signIn}
-                >
-                    <Text style={[styles.textSign, {
-                        color:'#fff'
-                    }]}>Add Menu Items</Text>
-                </LinearGradient>
-                </TouchableOpacity>
             </View>
 
             <Text style={[styles.text_footer, {
@@ -614,7 +522,6 @@ const AddMenu = ({navigation}) => {
                 </Animatable.View>
                  : null}
             </View>
-
             <Text style={[styles.text_footer, {
                 marginTop: 10
             }]}>Upload Restaurant Photo</Text>
@@ -631,6 +538,100 @@ const AddMenu = ({navigation}) => {
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Terms of service</Text>
                 <Text style={styles.color_textPrivate}>{" "}and</Text>
                 <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}Privacy policy</Text>
+            </View>
+
+            {menuItems.map((input, key) => (
+                // Item part
+                <View key={(key+1)} style={styles.AddItemCol}>
+                <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10,
+            }]}>Food Name</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="pencil"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Name of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itemnameInputChange(val,key)}
+                />
+            </View>
+
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Description</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="list"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Description of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itemdescriptionInputChange(val,key)}
+                />
+            </View>
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Image</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="image"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Image of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itemimageInputChange(val,key)}
+                />
+            </View>
+            <View style={{ alignSelf: 'center', padding: 12}}>
+            <Text style={[styles.text_footer, {
+                marginTop: 10
+            }]}>Food Price</Text>
+            </View>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="tag"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Price of the Food"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => itempriceInputChange(val,key)}
+                />
+            </View>
+            </View>
+            ))}
+            <View style={styles.buttonAddItems}>
+            <TouchableOpacity
+                    style={styles.signIn}
+                    onPress={() => handleAddMoreMenuItems()}
+                >
+                <LinearGradient
+                    colors={['#000000', '#000000']}
+                    style={styles.signIn}
+                >
+                    <Text style={[styles.textSign, {
+                        color:'#fff'
+                    }]}>Add Menu Items</Text>
+                </LinearGradient>
+                </TouchableOpacity>
             </View>
             <View style={styles.button}>
                 <TouchableOpacity
@@ -649,7 +650,6 @@ const AddMenu = ({navigation}) => {
             </View>
                 </>
                 )}
-            </ScrollView>
         </Animatable.View>
       </View>
       </View>

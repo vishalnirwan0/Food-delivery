@@ -48,13 +48,19 @@ export default function RootNavigation() {
               <>
               {(localStorage.getItem("role")=="owner")? (
               <>
+              <Stack.Screen name="MerchantHome" component={MerchantHome} />
               <Stack.Screen name="SignInScreen" component={SignInScreen} />
               <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
               <Stack.Screen name="MerchantMenu" component={MerchantMenu} />
-              <Stack.Screen name="MerchantHome" component={MerchantHome} />
               <Stack.Screen name="MerchantOrders" component={MerchantOrders} />
               </>
-              ):(<></>)}
+              ):(
+              <>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="RestaurantDetail" component={RestaurantDetail} paths="home/detail" />
+              <Stack.Screen name="SignInScreen" component={SignInScreen} />
+              <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+              </>)}
               </>
               )
               }

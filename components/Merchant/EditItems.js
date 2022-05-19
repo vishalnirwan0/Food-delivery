@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useRef,useState, useEffect, Component } from "react";
 import { View, Text, SafeAreaView, Modal, ScrollView, StyleSheet, Image,TouchableOpacity , Platform,TextInput } from "react-native";
 import { Divider } from "react-native-elements";
 import { collection, query, where, getDocs,updateDoc, deleteDoc, doc ,getDoc} from "firebase/firestore";
@@ -6,14 +6,34 @@ import db from "../../firebase";
 import DeliveryPerson from "./DeliveryPerson";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
 import LottieView from "lottie-react-native";
-
+import { send } from 'emailjs-com';
 
 const q = query(collection(db, "restuarants"), where("restaurantName", "==", localStorage.getItem("merchantEditrestaurantName")));
 var querySnapshot;
 var allMenuItems = [];
+var toSend = [];
+/// send-out an email 
+const SendEmail = () => {
+    toSend = {
+        from_name: 'Food Delivery service',
+        to_name: 'Customers',
+        message: localStorage.getItem("merchantEditrestaurantName") +' restuarant has updated ' + localStorage.getItem("merchantEditfoodName")  + '!!' ,
+        reply_to: localStorage.getItem("historycustomer"),
+      };
+
+      send('service_7qh12mn', 'template_hzwlkv8',toSend, 'FkAEwshvf5FgjAWvm')
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+      })
+      .catch((err) => {
+        console.log('FAILED...', err);
+      });
+  };
+
+
 
 export default class EditItems extends Component{
-  
+
     getOrder= async () => {
         const docRef = doc(db, "restuarants",localStorage.getItem('id'));
         var newres = [];
@@ -46,12 +66,19 @@ export default class EditItems extends Component{
     //console.log(allMenuItems[0][localStorage.getItem("merchantEdititemID")].foodDescription);
     //console.log(allMenuItems[0][localStorage.getItem("merchantEdititemID")].foodPrice);
     //console.log(allMenuItems[0]);
+    const emailList = localStorage.getItem('historycustomer');
+    console.log('emaillist',localStorage.getItem('merchantCustomerEmail'));
+    //for(var i=0; i<emailList.length; i++){
+     //   console.log('emaillist',emailList[i]);
+    //}
+
     const updateRes = doc(db, "restuarants",localStorage.getItem("merchantEditrestaurantID"));
     console.log(localStorage.getItem("merchantEditrestaurantID"));
     await updateDoc(updateRes, {
         menuItems:allMenuItems[0],
       }) .then(() => {
         alert("Item update succesful");
+        SendEmail();
     })
     .catch((err) => {
         alert(err.message)
@@ -85,7 +112,8 @@ export default class EditItems extends Component{
                       size={10}
                   />
                   <TextInput 
-                      value={localStorage.getItem("merchantEditItemdesc")}
+                    placeholder={localStorage.getItem("merchantEditItemdesc")}
+                     // value={localStorage.getItem("merchantEditItemdesc")}
                       style={styles.textInput}
                       autoCapitalize="none"
                       onChangeText={(val) => this.itemDescriptionInputChange(val)}
@@ -103,8 +131,8 @@ export default class EditItems extends Component{
                       size={10}
                   />
                   <TextInput 
-                     // placeholder="Food Price" // merchantEditItemPrice
-                      value={localStorage.getItem("merchantEditItemPrice")}
+                      placeholder={localStorage.getItem("merchantEditItemPrice")} // merchantEditItemPrice
+                      //value={localStorage.getItem("merchantEditItemPrice")}
                       style={styles.textInput}
                       autoCapitalize="none"
                       onChangeText={(val) => this.itempriceInputChange(val)}

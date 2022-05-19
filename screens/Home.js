@@ -48,13 +48,32 @@ export default function Home({ navigation }) {
       //   querySnapshot.forEach((doc) => {
       //     setRestaurantList((prev) => ([...prev, doc.data()]))
       //   })
-        const q = query(colRef, where("restStatus", "==", true), where("restaurantPostCode", "==", localStorage.getItem("postcode")));
-      getDocs(q)
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            setRestaurantList((prev) => ([...prev, doc.data()]))
-          });
-        })
+      if(localStorage.getItem('userData')){
+        var postcode = localStorage.getItem("postcode");
+        postcode=postcode.slice(0,4);
+        console.log(postcode)
+          const q = query(collection(db, "restuarants"), where("admin_authorization", "==", true));
+        getDocs(q)
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.data())
+              if(postcode == doc.data().restaurantPostCode.slice(0,4)){
+                setRestaurantList((prev) => ([...prev, doc.data()]))
+              }
+              
+            });
+          })
+      }else{
+        const q = query(collection(db, "restuarants"), where("admin_authorization", "==", true));
+        getDocs(q)
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.data())
+              setRestaurantList((prev) => ([...prev, doc.data()]))
+            });
+          })
+      }
+      
     }
 
       useEffect(() => {

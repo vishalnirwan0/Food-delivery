@@ -29,9 +29,10 @@ export default function HistoryOrderDetails({navigation}) {
       <View>
         <Divider width={1} />
         <View><OrderStatus/></View>
-        
         <ScrollView>
+          <View>
         <OrderInfo/>
+        </View>
           <MenuItems
             foods={lastOrder}
             hideCheckbox={true}
