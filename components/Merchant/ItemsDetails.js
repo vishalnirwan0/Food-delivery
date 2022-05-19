@@ -148,6 +148,7 @@ export default class ItemsDetails extends Component{
                  <Text style={{ fontWeight: "600", fontSize: 16 }}>  {this.state.menuItems[i].foodName}</Text>
                  <Text style={{ opacity: 0.7, fontSize: 16 }}>  {this.state.menuItems[i].foodDescription}</Text>
                  <Text style={{ opacity: 0.7, fontSize: 16 , color: 'blue'}}>  Price: £{this.state.menuItems[i].foodPrice}</Text>
+                 <Image source={{ uri: this.state.menuItems[i].foodImage }} style={{ width: 120, height: 120, padding: 5}} />
                  <View style={{ flexDirection: "row",}}>
                  <View style={styles.button}>
                  <TouchableOpacity  onPress={() => { 

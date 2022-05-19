@@ -51,12 +51,12 @@ export default function Home({ navigation }) {
       if(localStorage.getItem('userData')){
         var postcode = localStorage.getItem("postcode");
         postcode=postcode.slice(0,4);
-        console.log(postcode)
+        // console.log(postcode)
           const q = query(collection(db, "restuarants"), where("admin_authorization", "==", true));
         getDocs(q)
           .then((snapshot) => {
             snapshot.forEach((doc) => {
-              console.log(doc.data())
+              // console.log(doc.data())
               if(postcode == doc.data().restaurantPostCode.slice(0,4)){
                 setRestaurantList((prev) => ([...prev, doc.data()]))
               }

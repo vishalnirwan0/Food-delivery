@@ -16,7 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import db, { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { collection, addDoc,updateDoc ,doc,getDoc} from "firebase/firestore"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import MerchantBottomTabs from "../components/home/MerchantBottomTabs";
 
 
@@ -47,6 +47,7 @@ const AddMenu = ({navigation}) => {
         }
     ]);
     const [file, setFile] = useState(null);
+    const [file1, setFile1] = useState(null);
     const [progress, setProgress] = useState(null);
 
     useEffect(() => {
@@ -83,6 +84,46 @@ const AddMenu = ({navigation}) => {
     };
     file && uploadFile();
     }, [file])
+
+    useEffect(() => {
+        const uploadFileMenuItem = () => {
+            const key = 0;
+            const name = new Date().getTime() + file1.name;
+            const storageRef = ref(storage, name);
+            const uploadTask = uploadBytesResumable(storageRef, file1);
+
+            uploadTask.on("state_changed", (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setProgress(progress);
+                switch(snapshot.state) {
+                    case "paused":
+                    console.log(">>>>> Upload is paused");
+                    break;
+                    case "running":
+                    console.log(">>>>> Upload is running");
+                    break;
+                    default:
+                    break;
+                }
+            }, (error) => {
+                console.log(error);
+            },
+            () => {
+                console.log(">>>>>>>>> coming here")
+            getDownloadURL(uploadTask.snapshot.ref)
+                    .then((downloadURL) => {
+                        console.log(">>>>>>>. download URl", downloadURL)
+                        const inputImage = [...menuItems];
+                        inputImage[key].key = key;
+                        inputImage[key].foodImage = downloadURL;
+                        setMenuItems(inputImage);
+                        // [menuItems[0].foodImage = downloadURL];
+                    })
+            }
+        );
+    };
+    file1 && uploadFileMenuItem();
+    }, [file1])
 
     const restaurantNameInputChange = (val) => {
         if( val.length !== 0 ) {
@@ -186,12 +227,12 @@ const AddMenu = ({navigation}) => {
         setMenuItems(_itemdescriptionInputs);
     }
 
-    const itemimageInputChange = (text,key) => {
-        const _itemimageInputs = [...menuItems];
-        _itemimageInputs[key].key = key;
-        _itemimageInputs[key].foodImage = text;
-        setMenuItems(_itemimageInputs);
-    }
+    // const itemimageInputChange = (text,key) => {
+    //     const _itemimageInputs = [...menuItems];
+    //     _itemimageInputs[key].key = key;
+    //     _itemimageInputs[key].foodImage = text;
+    //     setMenuItems(_itemimageInputs);
+    // }
 
     const itempriceInputChange = (text,key) => {
         const _itempriceInputs = [...menuItems];
@@ -342,25 +383,21 @@ const AddMenu = ({navigation}) => {
                     onChangeText={(val) => itemdescriptionInputChange(val,key)}
                 />
             </View>
-            <View style={{ alignSelf: 'center', padding: 12}}>
+            <View style={{ alignSelf: 'center', padding: 6}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10
             }]}>Food Image</Text>
             </View>
             <View style={styles.action}>
-                <FontAwesome 
-                    name="image"
-                    color="#05375a"
-                    size={20}
+            <form>
+                <input 
+                 label="Upload"
+                 type="file"
+                 onChange={(e) => setFile1(e.target.files[0])}
                 />
-                <TextInput 
-                    placeholder="Image of the Food"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => itemimageInputChange(val,key)}
-                />
+            </form>
             </View>
-            <View style={{ alignSelf: 'center', padding: 12}}>
+            <View style={{ alignSelf: 'center', padding: 1}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10
             }]}>Food Price</Text>
@@ -585,19 +622,13 @@ const AddMenu = ({navigation}) => {
                 marginTop: 10
             }]}>Food Image</Text>
             </View>
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="image"
-                    color="#05375a"
-                    size={20}
+            <form>
+                <input 
+                 label="Upload"
+                 type="file"
+                 onChange={(e) => setFile1(e.target.files[0])}
                 />
-                <TextInput 
-                    placeholder="Image of the Food"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => itemimageInputChange(val,key)}
-                />
-            </View>
+            </form>
             <View style={{ alignSelf: 'center', padding: 12}}>
             <Text style={[styles.text_footer, {
                 marginTop: 10
