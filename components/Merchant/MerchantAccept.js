@@ -45,6 +45,7 @@ export default class MerchantAccpet extends Component{
     var newaddress= [];
     var newPostCode= [];
     var newEmail =[];
+    var cEmail = [];
     querySnapshot = await getDocs(q);
     querySnapshot.forEach(async(doc1) => {
     //doc.data() is never undefined for query doc snapshots
@@ -64,7 +65,12 @@ export default class MerchantAccpet extends Component{
     newaddress.push({"customer_address": doc1.data().customeraddress});
     newPostCode.push({"customer_postcode": doc1.data().customerpostcode});
     newEmail.push({"customer_email": doc1.data().customeremail});
+    if(cEmail.indexOf(doc1.data().customeremail) == -1){
+      cEmail.push(doc1.data().customeremail)
+    }
+    
    });
+    localStorage.setItem('historycustomer',JSON.stringify(cEmail));
     this.setState({
       restaurantName: newres,
       items : newitems,
