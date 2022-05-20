@@ -123,8 +123,22 @@ const SignInScreen = ({ navigation }) => {
         signInWithPopup(auth, googleProvider)
             .then(async(res) => {
                 console.log(res.user);
+                const q = query(collection(db, "userDetails"), where("email", "==", res.user.email));              
                 alert("Sign In Succesful")
-                localStoelsrage.setItem('userData', JSON.stringify(res.user.email));
+                localStorage.setItem('userData', JSON.stringify(res.user.email));
+                localStorage.setItem('name', JSON.stringify(res.user.email));
+                localStorage.setItem('postcode', 'SO17 2BD');
+                localStorage.setItem('role','customer');
+                localStorage.setItem('userId', res.user.reloadUserInfo.localId)
+                const collectionRef = collection(db, "userDetails");
+                const docRef = await addDoc(collectionRef, {
+                    fullName: res.user.email,
+                    email: res.user.email,
+                    address: '',
+                    postCode: 'SO17 2BD',
+                    role: 'customer',
+                })
+                console.log(localStorage);
                 navigation.navigate("Home");
                 window.location.reload();
             })
