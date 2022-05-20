@@ -148,8 +148,8 @@ export default class Orders extends Component{
                         }}
                  />
                  <View>
-                 <Text style={{ fontWeight: "600", fontSize: 16 }}>{v1.title}</Text>
-                 <Text style={{ opacity: 0.7, fontSize: 16 }}>{v1.price}</Text>
+                 <Text style={{ fontWeight: "600", fontSize: 16 }}>{v1.foodName}</Text>
+                 <Text style={{ opacity: 0.7, fontSize: 16 }}>{v1.foodPrice}</Text>
                  </View>
                    </View>
                  )

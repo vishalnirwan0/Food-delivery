@@ -171,7 +171,7 @@ export default class MerchantAccpet extends Component{
                {this.state.items[i].items.map((v1,i1) =>{
                  return (
                    <View key = {i1} style={{flexDirection:'row' }}>
-                      <Image  source = {{uri: v1.image}}
+                      <Image  source = {{uri: v1.foodImage}}
                         style={{
                           width: 100,
                           height: 100,
@@ -182,8 +182,8 @@ export default class MerchantAccpet extends Component{
                         }}
                  />
                  <View>
-                 <Text style={{ fontWeight: "600", fontSize: 16 ,margin: 20}}>{v1.title}</Text>
-                 <Text style={{ opacity: 0.7, fontSize: 16,margin: 20 }}>{v1.price}</Text>
+                 <Text style={{ fontWeight: "600", fontSize: 16 ,margin: 20}}>{v1.foodName}</Text>
+                 <Text style={{ opacity: 0.7, fontSize: 16,margin: 20 }}>{v1.foodPrice}</Text>
                  </View>
                    </View>
                  )
