@@ -123,55 +123,8 @@ const SignInScreen = ({ navigation }) => {
         signInWithPopup(auth, googleProvider)
             .then(async(res) => {
                 console.log(res.user);
-                 
-                const q = query(collection(db, "userDetails"), where("email", "==", res.user.email));
-                localStorage.setItem('userData', JSON.stringify(res.user.email));
-                const docSnap = await getDocs(q)
-                console.log(docSnap);
-                    docSnap.forEach(async(doc) => {
-                        if(doc.data().email==res.user.email){
-                            console.log(localStorage);
-                            docSnap.forEach((doc) => {
-                                localStorage.setItem('address', doc.data().address);
-                                localStorage.setItem('postcode', doc.data().postCode);
-                                localStorage.setItem('name',doc.data().fullName);
-                                localStorage.setItem('role',doc.data().role);
-                                localStorage.setItem('userId', res.user.reloadUserInfo.localId)
-                             })
-                        }else{
-                            console.log('here')
-                            //localStorage.setItem('userData', JSON.stringify(res.user.email));
-                            localStorage.setItem('postcode', 'SO17 2BD');
-                            localStorage.setItem('role','customer');
-                            localStorage.setItem('userId', res.user.reloadUserInfo.localId)
-                            const collectionRef = collection(db, "userDetails");
-                            const docRef = await addDoc(collectionRef, {
-                                fullName: res.user.email,
-                                email: res.user.email,
-                                address: '',
-                                postCode: 'SO17 2BD',
-                                role: 'customer',
-                            })
-                            
-                        }
-                     })
-                
                 alert("Sign In Succesful")
-                
-                
-                // localStoelsrage.setItem('userData', JSON.stringify(res.user.email));
-                // localStorage.setItem('postcode', 'SO17 2BD');
-                // localStorage.setItem('role','customer');
-                // localStorage.setItem('userId', res.user.reloadUserInfo.localId)
-                // const collectionRef = collection(db, "userDetails");
-                // const docRef = await addDoc(collectionRef, {
-                //     fullName: res.user.email,
-                //     email: res.user.email,
-                //     address: '',
-                //     postCode: 'SO17 2BD',
-                //     role: 'customer',
-                // })
-                //console.log(localStorage);
+                localStoelsrage.setItem('userData', JSON.stringify(res.user.email));
                 navigation.navigate("Home");
                 window.location.reload();
             })
