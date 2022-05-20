@@ -55,7 +55,7 @@ export default function MenuItems({
               <BouncyCheckbox
                 iconStyle={{ borderColor: "lightgray", borderRadius: 0 }}
                 fillColor="green"
-                isChecked={isFoodInCart(food[index], cartItems)}
+                isChecked={isFoodInCart(foods[index], cartItems)}
                 onPress={(checkboxValue) => selectItem(foods[index], checkboxValue)}
               />
             )}
@@ -81,10 +81,11 @@ const FoodInfo = (props) => (
   </View>
 );
 
+
 const FoodImage = ({ marginLeft, ...props }) => (
   <View>
     <Image
-      source={{ uri: props.foodImage }}
+      source={{ uri: props.food.foodImage }}
       style={{
         width: 100,
         height: 100,

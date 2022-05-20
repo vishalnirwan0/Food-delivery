@@ -14,8 +14,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs,addDoc } from "firebase/firestore";
 import db from "../firebase";
+import { async } from '@firebase/util';
 
 const SignInScreen = ({ navigation }) => {
 
@@ -120,11 +121,57 @@ const SignInScreen = ({ navigation }) => {
 
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
-            .then((res) => {
+            .then(async(res) => {
                 console.log(res.user);
-                 alert("Sign In Succesful")
+                 
+                const q = query(collection(db, "userDetails"), where("email", "==", res.user.email));
                 localStorage.setItem('userData', JSON.stringify(res.user.email));
-                console.log(localStorage);
+                const docSnap = await getDocs(q)
+                console.log(docSnap);
+                    docSnap.forEach(async(doc) => {
+                        if(doc.data().email==res.user.email){
+                            console.log(localStorage);
+                            docSnap.forEach((doc) => {
+                                localStorage.setItem('address', doc.data().address);
+                                localStorage.setItem('postcode', doc.data().postCode);
+                                localStorage.setItem('name',doc.data().fullName);
+                                localStorage.setItem('role',doc.data().role);
+                                localStorage.setItem('userId', res.user.reloadUserInfo.localId)
+                             })
+                        }else{
+                            console.log('here')
+                            //localStorage.setItem('userData', JSON.stringify(res.user.email));
+                            localStorage.setItem('postcode', 'SO17 2BD');
+                            localStorage.setItem('role','customer');
+                            localStorage.setItem('userId', res.user.reloadUserInfo.localId)
+                            const collectionRef = collection(db, "userDetails");
+                            const docRef = await addDoc(collectionRef, {
+                                fullName: res.user.email,
+                                email: res.user.email,
+                                address: '',
+                                postCode: 'SO17 2BD',
+                                role: 'customer',
+                            })
+                            
+                        }
+                     })
+                
+                alert("Sign In Succesful")
+                
+                
+                // localStoelsrage.setItem('userData', JSON.stringify(res.user.email));
+                // localStorage.setItem('postcode', 'SO17 2BD');
+                // localStorage.setItem('role','customer');
+                // localStorage.setItem('userId', res.user.reloadUserInfo.localId)
+                // const collectionRef = collection(db, "userDetails");
+                // const docRef = await addDoc(collectionRef, {
+                //     fullName: res.user.email,
+                //     email: res.user.email,
+                //     address: '',
+                //     postCode: 'SO17 2BD',
+                //     role: 'customer',
+                // })
+                //console.log(localStorage);
                 navigation.navigate("Home");
                 window.location.reload();
             })

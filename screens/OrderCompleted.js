@@ -77,8 +77,6 @@ export default function OrderCompleted({navigation}) {
             speed={0.5}
           />
         </ScrollView>
-
-        <Maps/>
       </View>
       
     </SafeAreaView>

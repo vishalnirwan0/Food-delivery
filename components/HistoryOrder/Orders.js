@@ -136,7 +136,8 @@ export default class Orders extends Component{
                {this.state.items[i].items.map((v1,i1) =>{
                  return (
                    <View key = {i1} style={{flexDirection:'row' }}>
-                      <Image  source = {{uri: v1.image}}
+                     
+                      <Image  source = {{uri: v1.foodImage}}
                         style={{
                           width: 100,
                           height: 100,
