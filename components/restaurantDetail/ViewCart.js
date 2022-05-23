@@ -42,6 +42,7 @@ export default function ViewCart({ navigation }) {
         customerpostcode: localStorage.getItem('postcode'),
         customeremail:localStorage.getItem('userData'),
       });
+      localStorage.setItem('currentOrder', docRef.id)
       navigation.navigate("OrderCompleted");
     }
     else{
