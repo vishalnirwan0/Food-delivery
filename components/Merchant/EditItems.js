@@ -67,7 +67,7 @@ export default class EditItems extends Component{
     //console.log(allMenuItems[0][localStorage.getItem("merchantEdititemID")].foodPrice);
     //console.log(allMenuItems[0]);
     const emailList = localStorage.getItem('historycustomer');
-    console.log('emaillist',localStorage.getItem('merchantCustomerEmail'));
+    console.log('emaillist',localStorage.getItem('historycustomer'));
     //for(var i=0; i<emailList.length; i++){
      //   console.log('emaillist',emailList[i]);
     //}

@@ -25,6 +25,7 @@ export default function ViewCart({ navigation }) {
   });
 
   const addOrderToFireBase = async() => {
+    if(localStorage.getItem('userData')){
     setLoading(true);
     // const db = getFirestore(firebase);
     const currenttime = new Date().setHours(new Date().getHours() + 1);
@@ -41,12 +42,12 @@ export default function ViewCart({ navigation }) {
         customerpostcode: localStorage.getItem('postcode'),
         customeremail:localStorage.getItem('userData'),
       });
-      localStorage.setItem('currentOrder', docRef.id)
-      if(localStorage.getItem("userData")){
-        navigation.navigate("OrderCompleted");
-      }else{
+      navigation.navigate("OrderCompleted");
+    }
+    else{
         navigation.navigate("SignInScreen");
       }
+  
       
 
     //   .then(() => {

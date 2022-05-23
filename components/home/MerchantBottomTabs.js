@@ -13,7 +13,7 @@ export default function MerchantBottomTabs({ navigation }) {
       }}
     >
       <Icon icon="home" text="Home" navigation={navigation}/>
-      <Icon icon="photo-video" text="Manage restuant's blackground" navigation={navigation}/>
+      {/* <Icon icon="photo-video" text="Manage restuant's blackground" navigation={navigation}/> */}
       <Icon icon="clipboard-list" text="Add food items" navigation={navigation}/>
       <Icon icon="receipt" text="Manage orders" navigation={navigation}/>
       {/* <Icon icon="user" text="Account" navigation={navigation}/> */}

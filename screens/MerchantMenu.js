@@ -114,12 +114,12 @@ const AddMenu = ({navigation}) => {
                     .then((downloadURL) => {
                         console.log(">>>>>>>. download URl", downloadURL)
                         const inputImage = [...menuItems];
-                        //console.log(menuItems);
+                        console.log(menuItems);
                         inputImage[keys].foodImage = downloadURL;
                         //console.log("Food Image",inputImage[0].foodImage);
                         inputImage[keys].key = keys;
-                        //console.log("KEY",key);
-                        //console.log(inputImage);
+                        console.log("KEY",keys);
+                        console.log(inputImage);
                         setMenuItems(inputImage);
                         keys=keys+1;
                         // [menuItems[0].foodImage = downloadURL];
