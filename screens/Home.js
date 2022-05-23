@@ -92,7 +92,7 @@ export default function Home({ navigation }) {
 
             {/* <SearchBar cityHandler={setCity} /> */}
           </View>
-          <Categories />
+          {/* <Categories /> */}
           <ScrollView showsVerticalScrollIndicator={false} horizontal={true} style={{ alignSelf: 'center' }}>
             <RestaurantItems
               restaurantData={restaurantList}
