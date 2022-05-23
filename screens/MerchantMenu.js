@@ -20,9 +20,9 @@ import { getAuth } from "firebase/auth";
 import MerchantBottomTabs from "../components/home/MerchantBottomTabs";
 
 
-
+var keys = 0;
 const AddMenu = ({navigation}) => {
-
+    
     const auth = getAuth();
     const [data, setData] = useState({
         restaurantName: '',
@@ -87,7 +87,7 @@ const AddMenu = ({navigation}) => {
 
     useEffect(() => {
         const uploadFileMenuItem = () => {
-            const key = 0;
+            //const key = 0;
             const name = new Date().getTime() + file1.name;
             const storageRef = ref(storage, name);
             const uploadTask = uploadBytesResumable(storageRef, file1);
@@ -114,9 +114,14 @@ const AddMenu = ({navigation}) => {
                     .then((downloadURL) => {
                         console.log(">>>>>>>. download URl", downloadURL)
                         const inputImage = [...menuItems];
-                        inputImage[key].key = key;
-                        inputImage[key].foodImage = downloadURL;
+                        //console.log(menuItems);
+                        inputImage[keys].foodImage = downloadURL;
+                        //console.log("Food Image",inputImage[0].foodImage);
+                        inputImage[keys].key = keys;
+                        //console.log("KEY",key);
+                        //console.log(inputImage);
                         setMenuItems(inputImage);
+                        keys=keys+1;
                         // [menuItems[0].foodImage = downloadURL];
                     })
             }
@@ -265,7 +270,7 @@ const AddMenu = ({navigation}) => {
                         const collectionRef = doc(db, "restuarants",localStorage.getItem('id'));
                         const docSnap= await getDoc(collectionRef)
                         const allMenuItems = [...menuItems];
-                        console.log(">>>>>>. MmnuItems", allMenuItems);
+                        console.log(">>>>>>. MmnuItems", menuItems);
                         if(docSnap.data().menuItems){
                             Object.keys(docSnap.data().menuItems).map((input, i) => (
                             allMenuItems.push(docSnap.data().menuItems[i])
@@ -287,8 +292,7 @@ const AddMenu = ({navigation}) => {
                             })
                             .catch((err) => {
                                 alert(err.message)
-                            })
-                           
+                            }) 
                     }
 
     const handleAddMoreMenuItems = () => {

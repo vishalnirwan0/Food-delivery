@@ -43,8 +43,8 @@ const deleteItems = async(allMenuItems,id) =>{
   allMenuItems.splice(id, 1); 
   console.log(allMenuItems);
 
-  const updateRes = doc(db, "restuarants",localStorage.getItem("merchantEditrestaurantID"));
-  console.log(localStorage.getItem("merchantEditrestaurantID"));
+  const updateRes = doc(db, "restuarants",localStorage.getItem("id"));
+  console.log(localStorage.getItem("id"));
   await updateDoc(updateRes, {
       menuItems:allMenuItems,
     }) .then(() => {
