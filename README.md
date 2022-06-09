@@ -1,2 +1,6 @@
 # Food-delivery
-MSc Web-App Project
+A React-Native web application for food-delivery.
+
+Tech-Stack:
+Frontend: React-Native
+Backend: FireBase
